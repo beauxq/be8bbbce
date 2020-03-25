@@ -6,7 +6,11 @@ from alu import ALU
 from ram import Ram
 
 
-BIT_COUNT = 8
+INSTRUCTION_LENGTH = 4
+ADDRESS_LENGTH = 4
+# One word can contain an instruction and an address.
+BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH
+
 # Some modules (registers, bus) don't need to know how many bits,
 # because they just use the Python int data structure for their values.
 # The ALU needs to know how many bits so it can emulate overflow accurately.
@@ -23,7 +27,7 @@ class Computer():
                               Signals.REG_B_IN, Signals.REG_B_OUT)
         self.alu = ALU(self.signals, self.bus,
                        self.reg_a, self.reg_b, BIT_COUNT)
-        self.ram = Ram(self.signals, self.bus, BIT_COUNT)
+        self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)
 
 
 def main():

@@ -5,10 +5,10 @@ from typing import List
 
 
 class _MemoryAddressRegister(Receiver):
-    def __init__(self, signals: Signals, bus: Bus, bit_count: int):
+    def __init__(self, signals: Signals, bus: Bus, address_length: int):
         signals.listen(self)
         self.bus = bus
-        self.address_length = bit_count - 4  # 4 bits for instructions
+        self.address_length = address_length
         self.address_count = 2 ** self.address_length
         self.mar_in = 0
         self.value = 0
@@ -22,10 +22,10 @@ class _MemoryAddressRegister(Receiver):
 
 
 class Ram(Receiver):
-    def __init__(self, signals: Signals, bus: Bus, bit_count: int):
+    def __init__(self, signals: Signals, bus: Bus, address_length: int):
         signals.listen(self)
         self.bus = bus
-        self.mar = _MemoryAddressRegister(signals, bus, bit_count)
+        self.mar = _MemoryAddressRegister(signals, bus, address_length)
         self.memory: List[int] = [0 for _ in range(self.mar.address_count)]
         self.ram_in = 0
         self.ram_out = 0
