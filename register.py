@@ -33,6 +33,7 @@ class Register(Receiver):
         elif code == self.my_load_signal:
             self.load_set = value
         elif code == Signals.CLOCK and value and self.load_set:
+            print("register", self.my_load_signal, "value", self.bus.value)
             self.load_in()
 
 
