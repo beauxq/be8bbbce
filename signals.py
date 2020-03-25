@@ -26,8 +26,9 @@ class Signals:
 
     CLOCK = "clk"
 
-    # Note that in the original computer some of these signals are active low.
-    # In this emulator, they are all active high.
+    # Note that in the original computer some of these signals
+    # are active low on the side of an inverter connected to the module.
+    # In this emulator, they are all active high through the whole connection.
 
     def __init__(self):
         self.receivers: List[Receiver] = []
