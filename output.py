@@ -1,22 +1,19 @@
-from receiver import Receiver
+from register import RegisterIn
 from signals import Signals
 from bus import Bus
 
 
-class Output(Receiver):
+class Output(RegisterIn):
     def __init__(self, signals: Signals, bus: Bus, bit_count: int):
-        signals.listen(self)
-        self.bus = bus
-        self.bit_count = bit_count
-        self.value = 0
-        self.load = 0
+        super().__init__(signals, bus, Signals.OUTPUT_IN)
+        # self.bit_count = bit_count
+        self.max_plus_one = 2 ** bit_count
 
     def unsigned_to_signed(self, x):
-        max_plus_one = 2 ** self.bit_count
-        half_max = max_plus_one // 2
-        assert 0 <= x < max_plus_one
+        half_max = self.max_plus_one // 2
+        assert 0 <= x < self.max_plus_one
         if x >= half_max:
-            return x - max_plus_one
+            return x - self.max_plus_one
         return x
 
     def print(self):
@@ -24,9 +21,6 @@ class Output(Receiver):
               "(" + str(self.unsigned_to_signed(self.value)) + ")")
 
     def receive_signal(self, code: str, value: int):
-        if code == Signals.OUTPUT_IN:
-            self.load = value
-        elif code == Signals.CLOCK:
-            if self.load:
-                self.value = self.bus.value
-                self.print()
+        super().receive_signal(code, value)
+        if code == Signals.CLOCK and self.load_set:
+            self.print()

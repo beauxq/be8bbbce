@@ -1,6 +1,6 @@
 from signals import Signals
 from clock import Clock
-from register import Register
+from register import RegisterInOut
 from bus import Bus
 from alu import ALU
 from ram import Ram
@@ -23,10 +23,10 @@ class Computer():
         self.signals = Signals()
         self.clock = Clock(self.signals)
         self.bus = Bus()
-        self.reg_a = Register(self.signals, self.bus,
-                              Signals.REG_A_IN, Signals.REG_A_OUT)
-        self.reg_b = Register(self.signals, self.bus,
-                              Signals.REG_B_IN, Signals.REG_B_OUT)
+        self.reg_a = RegisterInOut(self.signals, self.bus,
+                                   Signals.REG_A_IN, Signals.REG_A_OUT)
+        self.reg_b = RegisterInOut(self.signals, self.bus,
+                                   Signals.REG_B_IN, Signals.REG_B_OUT)
         self.alu = ALU(self.signals, self.bus,
                        self.reg_a, self.reg_b, BIT_COUNT)
         self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)

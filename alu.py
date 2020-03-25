@@ -1,23 +1,21 @@
 from bus import Bus
-from register import Register
+from register import RegisterOut, Register, RegisterInOut
 from receiver import Receiver
 from signals import Signals
 
 
-class ALU(Receiver):
+class ALU(RegisterOut):
     def __init__(self,
                  signals: Signals,
                  bus: Bus,
                  reg_a: Register,
                  reg_b: Register,
                  bit_count: int):
-        signals.listen(self)
-        self.bus = bus
+        super().__init__(signals, bus, Signals.ALU_OUT)
         self.reg_a = reg_a
         self.reg_b = reg_b
         self.max_plus_one = 2 ** bit_count
         self.bit_count = bit_count
-        self.value = 0
         self.carry = 0
         self.subtract = 0
 
@@ -40,13 +38,12 @@ class ALU(Receiver):
             self.carry = 1
 
     def receive_signal(self, code: str, value: int):
+        super().receive_signal(code, value)
         if code == Signals.CLOCK:
             # both clock going high and going low
             # in original computer, this is happening
             # constantly all the time and needs no signal
             self.add()
-        elif code == Signals.ALU_OUT and value == 1:
-            self.bus.value = self.value
         elif code == Signals.SUBTRACT:
             self.subtract = value
 
@@ -54,8 +51,8 @@ class ALU(Receiver):
 def test():
     signals = Signals()
     bus = Bus()
-    reg_a = Register(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
-    reg_b = Register(signals, bus, Signals.REG_B_IN, Signals.REG_B_OUT)
+    reg_a = RegisterInOut(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
+    reg_b = RegisterInOut(signals, bus, Signals.REG_B_IN, Signals.REG_B_OUT)
     alu = ALU(signals, bus, reg_a, reg_b, 8)
     # TODO: test other bit lengths
 

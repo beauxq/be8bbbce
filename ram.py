@@ -1,24 +1,18 @@
 from receiver import Receiver
+from register import RegisterIn
 from signals import Signals
 from bus import Bus
 from typing import List
 
 
-class _MemoryAddressRegister(Receiver):
+class _MemoryAddressRegister(RegisterIn):
     def __init__(self, signals: Signals, bus: Bus, address_length: int):
-        signals.listen(self)
-        self.bus = bus
+        super().__init__(signals, bus, Signals.MAR_IN)
         self.address_length = address_length
         self.address_count = 2 ** self.address_length
-        self.mar_in = 0
-        self.value = 0
 
-    def receive_signal(self, code: str, value: int):
-        if code == Signals.CLOCK and value == 1:
-            if self.mar_in:
-                self.value = self.bus.value % self.address_count
-        elif code == Signals.MAR_IN:
-            self.mar_in = value
+    def load_in(self):
+        self.value = self.bus.value % self.address_count
 
 
 class Ram(Receiver):

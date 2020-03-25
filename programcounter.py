@@ -1,27 +1,19 @@
-from receiver import Receiver
+from register import RegisterInOut
 from signals import Signals
 from bus import Bus
 
 
-class ProgramCounter(Receiver):
+class ProgramCounter(RegisterInOut):
     def __init__(self, signals: Signals, bus: Bus, address_length: int):
-        signals.listen(self)
-        self.bus = bus
+        super().__init__(signals, bus, Signals.COUNTER_IN, Signals.COUNTER_OUT)
         self.max_plus_one = 2 ** address_length
-        self.value = 0
-        self.pc_in = 0
         self.increment = 0
 
     def receive_signal(self, code: str, value: int):
-        if code == Signals.COUNTER_IN:
-            self.pc_in = value
-        elif (code == Signals.COUNTER_OUT) and value:
-            self.bus.value = self.value
-        elif code == Signals.COUNTER_INCREMENT:
+        super().receive_signal(code, value)
+        if code == Signals.COUNTER_INCREMENT:
             self.increment = value
         elif (code == Signals.CLOCK) and value:
-            if self.pc_in:
-                self.value = self.bus.value
             if self.increment:
                 self.value += 1
-            self.value %= self.max_plus_one
+        self.value %= self.max_plus_one
