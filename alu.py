@@ -54,8 +54,8 @@ class ALU(Receiver):
 def test():
     signals = Signals()
     bus = Bus()
-    reg_a = Register(signals, bus, "a_in", "a_out")
-    reg_b = Register(signals, bus, "b_in", "b_out")
+    reg_a = Register(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
+    reg_b = Register(signals, bus, Signals.REG_B_IN, Signals.REG_B_OUT)
     alu = ALU(signals, bus, reg_a, reg_b, 8)
     # TODO: test other bit lengths
 
@@ -164,38 +164,38 @@ def test():
 
     # move value from alu to reg a to keep counting down by 2
     signals.signal(Signals.ALU_OUT, 1)
-    signals.signal("a_in", 1)
+    signals.signal(Signals.REG_A_IN, 1)
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     signals.signal(Signals.ALU_OUT, 0)
-    signals.signal("a_in", 0)
+    signals.signal(Signals.REG_A_IN, 0)
     assert alu.value == 2
     assert alu.carry == 1
 
     signals.signal(Signals.ALU_OUT, 1)
-    signals.signal("a_in", 1)
+    signals.signal(Signals.REG_A_IN, 1)
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     signals.signal(Signals.ALU_OUT, 0)
-    signals.signal("a_in", 0)
+    signals.signal(Signals.REG_A_IN, 0)
     assert alu.value == 0
     assert alu.carry == 1
 
     signals.signal(Signals.ALU_OUT, 1)
-    signals.signal("a_in", 1)
+    signals.signal(Signals.REG_A_IN, 1)
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     signals.signal(Signals.ALU_OUT, 0)
-    signals.signal("a_in", 0)
+    signals.signal(Signals.REG_A_IN, 0)
     assert alu.value == 254
     assert alu.carry == 0
 
     signals.signal(Signals.ALU_OUT, 1)
-    signals.signal("a_in", 1)
+    signals.signal(Signals.REG_A_IN, 1)
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     signals.signal(Signals.ALU_OUT, 0)
-    signals.signal("a_in", 0)
+    signals.signal(Signals.REG_A_IN, 0)
     assert alu.value == 252
     assert alu.carry == 1
 

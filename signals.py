@@ -12,9 +12,17 @@ class Signals:
     RAM_IN = "ri"
     INSTR_OUT = "io"
     INSTR_IN = "ii"
-
+    COUNTER_OUT = "co"
+    COUNTER_IN = "j"  # jump
+    COUNTER_INCREMENT = "ce"  # enable
+    REG_A_IN = "ai"
+    REG_A_OUT = "ao"
+    REG_B_IN = "bi"
+    REG_B_OUT = "bo"
     ALU_OUT = "eo"
     SUBTRACT = "su"
+    CARRY_BIT = "cy"
+    OUTPUT_IN = "oi"
 
     CLOCK = "clk"
 

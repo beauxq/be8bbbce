@@ -17,8 +17,10 @@ class Computer():
         self.signals = Signals()
         self.clock = Clock(self.signals)
         self.bus = Bus()
-        self.reg_a = Register(self.signals, self.bus, "a_in", "a_out")
-        self.reg_b = Register(self.signals, self.bus, "b_in", "b_out")
+        self.reg_a = Register(self.signals, self.bus,
+                              Signals.REG_A_IN, Signals.REG_A_OUT)
+        self.reg_b = Register(self.signals, self.bus,
+                              Signals.REG_B_IN, Signals.REG_B_OUT)
         self.alu = ALU(self.signals, self.bus,
                        self.reg_a, self.reg_b, BIT_COUNT)
         self.ram = Ram(self.signals, self.bus, BIT_COUNT)
