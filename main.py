@@ -6,6 +6,8 @@ from alu import ALU
 from ram import Ram
 from programcounter import ProgramCounter
 from output import Output
+from instructionregister import InstructionRegister
+from control import Control
 
 
 INSTRUCTION_LENGTH = 4
@@ -32,12 +34,21 @@ class Computer():
         self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)
         self.pc = ProgramCounter(self.signals, self.bus, ADDRESS_LENGTH)
         self.out = Output(self.signals, self.bus, BIT_COUNT)
+        self.ir = InstructionRegister(self.signals, self.bus, ADDRESS_LENGTH)
+        self.control = Control(self.signals, self.ir)
 
 
 def main():
     computer = Computer()
-    computer.clock.go_high()
-    computer.clock.go_low()
+
+    computer.ram.memory[0] = 0b00011110
+    computer.ram.memory[1] = 0b00101111
+    computer.ram.memory[2] = 0b11100000
+    computer.ram.memory[3] = 0b11110000
+    computer.ram.memory[0b1110] = 28
+    computer.ram.memory[0b1111] = 14
+
+    computer.clock.go()
 
 
 if __name__ == "__main__":
