@@ -18,7 +18,7 @@ class Computer():
         self.bus = Bus()
         self.reg_a = Register(self.signals, self.bus, "a_in", "a_out")
         self.reg_b = Register(self.signals, self.bus, "b_in", "b_out")
-        self.alu = ALU(self.bus, self.signals,
+        self.alu = ALU(self.signals, self.bus,
                        self.reg_a, self.reg_b, BIT_COUNT)
 
 

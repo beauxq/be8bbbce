@@ -6,13 +6,13 @@ from signals import Signals
 
 class ALU(Receiver):
     def __init__(self,
-                 bus: Bus,
                  signals: Signals,
+                 bus: Bus,
                  reg_a: Register,
                  reg_b: Register,
                  bit_count: int):
-        self.bus = bus
         signals.listen(self)
+        self.bus = bus
         self.reg_a = reg_a
         self.reg_b = reg_b
         self.max_plus_one = 2 ** bit_count
@@ -56,7 +56,8 @@ def test():
     bus = Bus()
     reg_a = Register(signals, bus, "a_in", "a_out")
     reg_b = Register(signals, bus, "b_in", "b_out")
-    alu = ALU(bus, signals, reg_a, reg_b, 8)
+    alu = ALU(signals, bus, reg_a, reg_b, 8)
+    # TODO: test other bit lengths
 
     reg_a.value = 6
     reg_b.value = 2
