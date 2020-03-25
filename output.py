@@ -17,10 +17,10 @@ class Output(RegisterIn):
         return x
 
     def print(self):
-        print("output:", hex(self.value), self.value,
+        print("        output:", hex(self.value), self.value,
               "(" + str(self.unsigned_to_signed(self.value)) + ")")
 
     def receive_signal(self, code: str, value: int):
         super().receive_signal(code, value)
-        if code == Signals.CLOCK and self.load_set:
+        if (code == Signals.CLOCK) and value and self.load_set:
             self.print()
