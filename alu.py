@@ -14,7 +14,7 @@ class ALU(RegisterOut):
         super().__init__(signals, bus, Signals.ALU_OUT)
         self.reg_a = reg_a
         self.reg_b = reg_b
-        self.max_plus_one = 2 ** bit_count
+        self.max_plus_one = 1 << bit_count
         self.bit_count = bit_count
         self.carry = 0
         self.subtract = 0

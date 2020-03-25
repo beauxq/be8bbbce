@@ -7,7 +7,7 @@ class Output(RegisterIn):
     def __init__(self, signals: Signals, bus: Bus, bit_count: int):
         super().__init__(signals, bus, Signals.OUTPUT_IN)
         # self.bit_count = bit_count
-        self.max_plus_one = 2 ** bit_count
+        self.max_plus_one = 1 << bit_count
 
     def unsigned_to_signed(self, x):
         half_max = self.max_plus_one // 2

@@ -9,7 +9,7 @@ class _MemoryAddressRegister(RegisterIn):
     def __init__(self, signals: Signals, bus: Bus, address_length: int):
         super().__init__(signals, bus, Signals.MAR_IN)
         self.address_length = address_length
-        self.address_count = 2 ** self.address_length
+        self.address_count = 1 << self.address_length
 
     def load_in(self):
         self.value = self.bus.value % self.address_count

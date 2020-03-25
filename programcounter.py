@@ -6,7 +6,7 @@ from bus import Bus
 class ProgramCounter(RegisterInOut):
     def __init__(self, signals: Signals, bus: Bus, address_length: int):
         super().__init__(signals, bus, Signals.COUNTER_IN, Signals.COUNTER_OUT)
-        self.max_plus_one = 2 ** address_length
+        self.max_plus_one = 1 << address_length
         self.increment = 0
 
     def receive_signal(self, code: str, value: int):
