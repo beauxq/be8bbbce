@@ -24,5 +24,5 @@ class Register(Receiver):
             self.bus.value = self.value
         elif code == self.my_load_signal:
             self.load_set = value
-        elif code == "clock" and value and self.load_set:
+        elif code == Signals.CLOCK and value and self.load_set:
             self.value = self.bus.value

@@ -14,10 +14,10 @@ class _MemoryAddressRegister(Receiver):
         self.value = 0
 
     def receive_signal(self, code: str, value: int):
-        if code == "clock" and value == 1:
+        if code == Signals.CLOCK and value == 1:
             if self.mar_in:
                 self.value = self.bus.value % self.address_count
-        elif code == "mar_in":
+        elif code == Signals.MAR_IN:
             self.mar_in = value
 
 
@@ -31,7 +31,7 @@ class Ram(Receiver):
         self.ram_out = 0
 
     def receive_signal(self, code: str, value: int):
-        if code == "clock" and value == 1:
+        if code == Signals.CLOCK and value == 1:
             if self.ram_in and self.ram_out:
                 raise ValueError("I don't know what should happen if "
                                  "in and out at the same time.")
@@ -39,7 +39,7 @@ class Ram(Receiver):
                 self.memory[self.mar.value] = self.bus.value
             if self.ram_out:
                 self.bus.value = self.memory[self.mar.value]
-        elif code == "ram_in":
+        elif code == Signals.RAM_IN:
             self.ram_in = value
-        elif code == "ram_out":
+        elif code == Signals.RAM_OUT:
             self.ram_out = value

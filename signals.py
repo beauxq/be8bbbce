@@ -3,6 +3,21 @@ from typing import List
 
 
 class Signals:
+    # these could be anything (enum)
+    # using the labels that he used
+    # he started labeling signals here: https://youtu.be/Vw3uDOUJRGw?t=603
+    HALT = "hlt"
+    MAR_IN = "mi"
+    RAM_OUT = "ro"
+    RAM_IN = "ri"
+    INSTR_OUT = "io"
+    INSTR_IN = "ii"
+
+    ALU_OUT = "eo"
+    SUBTRACT = "su"
+
+    CLOCK = "clk"
+
     def __init__(self):
         self.receivers: List[Receiver] = []
 
