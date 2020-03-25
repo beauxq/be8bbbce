@@ -26,6 +26,9 @@ class Signals:
 
     CLOCK = "clk"
 
+    # Note that in the original computer some of these signals are active low.
+    # In this emulator, they are all active high.
+
     def __init__(self):
         self.receivers: List[Receiver] = []
 
