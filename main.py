@@ -5,6 +5,7 @@ from bus import Bus
 from alu import ALU
 from ram import Ram
 from programcounter import ProgramCounter
+from output import Output
 
 
 INSTRUCTION_LENGTH = 4
@@ -30,6 +31,7 @@ class Computer():
                        self.reg_a, self.reg_b, BIT_COUNT)
         self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)
         self.pc = ProgramCounter(self.signals, self.bus, ADDRESS_LENGTH)
+        self.out = Output(self.signals, self.bus, BIT_COUNT)
 
 
 def main():
