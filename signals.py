@@ -22,7 +22,9 @@ class Signals:
     COUNTER_OUT = "co"
     COUNTER_IN = "j"  # jump
 
-    REG_B_OUT = "bo"  # not used (not connected in original)
+    REG_B_OUT = "bo"
+    # B out not used (in original, ability to write to bus
+    # is wired, but control signal is not connected to anything)
 
     CARRY_BIT = "cy"
     CLOCK = "clk"
