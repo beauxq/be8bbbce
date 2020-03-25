@@ -50,6 +50,10 @@ def main():
 
     computer.clock.go()
 
+    computer.control.reset()
+
+    computer.clock.go()
+
 
 if __name__ == "__main__":
     main()

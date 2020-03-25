@@ -49,3 +49,8 @@ class Control(Receiver):
             else:
                 # low clock
                 self.execute()
+
+    def reset(self):
+        self.signals.signal(Signals.RESET, 1)
+        self.step = 4  # last step
+        self.execute()

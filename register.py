@@ -28,13 +28,16 @@ class Register(Receiver):
         pass
 
     def receive_signal(self, code: str, value: int):
-        if code == self.my_enable_signal and value:
+        if (code == self.my_enable_signal) and value:
             self.enable_out()
         elif code == self.my_load_signal:
             self.load_set = value
-        elif code == Signals.CLOCK and value and self.load_set:
+        elif (code == Signals.CLOCK) and value and self.load_set:
             print("register", self.my_load_signal, "value", self.bus.value)
             self.load_in()
+        elif (code == Signals.RESET) and value:
+            self.value = 0
+            self.load_set = 0
 
 
 class RegisterIn(Register):

@@ -28,6 +28,7 @@ class Signals:
 
     CARRY_BIT = "cy"
     CLOCK = "clk"
+    RESET = "rst"
 
     # Note that in the original computer some of these signals
     # are active low on the side of an inverter connected to the module.

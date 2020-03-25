@@ -12,8 +12,10 @@ class Clock(Receiver):
         self.halted = 0
 
     def receive_signal(self, code: str, value: int):
-        if code == Signals.HALT:
+        if (code == Signals.HALT) and value:
             self.halted = value
+        if code == Signals.RESET:
+            self.halted = 0
 
     def go_high(self):
         """ does nothing if clock is already high """
