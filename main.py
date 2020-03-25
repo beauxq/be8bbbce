@@ -3,6 +3,7 @@ from clock import Clock
 from register import Register
 from bus import Bus
 from alu import ALU
+from ram import Ram
 
 
 BIT_COUNT = 8
@@ -20,6 +21,7 @@ class Computer():
         self.reg_b = Register(self.signals, self.bus, "b_in", "b_out")
         self.alu = ALU(self.signals, self.bus,
                        self.reg_a, self.reg_b, BIT_COUNT)
+        self.ram = Ram(self.signals, self.bus, BIT_COUNT)
 
 
 def main():
