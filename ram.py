@@ -22,18 +22,12 @@ class Ram(Receiver):
         self.mar = _MemoryAddressRegister(signals, bus, address_length)
         self.memory: List[int] = [0 for _ in range(self.mar.address_count)]
         self.ram_in = 0
-        self.ram_out = 0
 
     def receive_signal(self, code: str, value: int):
-        if code == Signals.CLOCK and value == 1:
-            if self.ram_in and self.ram_out:
-                raise ValueError("I don't know what should happen if "
-                                 "in and out at the same time.")
+        if (code == Signals.CLOCK) and value:
             if self.ram_in:
                 self.memory[self.mar.value] = self.bus.value
-            if self.ram_out:
-                self.bus.value = self.memory[self.mar.value]
         elif code == Signals.RAM_IN:
             self.ram_in = value
-        elif code == Signals.RAM_OUT:
-            self.ram_out = value
+        elif (code == Signals.RAM_OUT) and value:
+            self.bus.value = self.memory[self.mar.value]
