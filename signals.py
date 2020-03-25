@@ -8,22 +8,23 @@ class Signals:
     # he started labeling signals here: https://youtu.be/Vw3uDOUJRGw?t=603
     HALT = "hlt"
     MAR_IN = "mi"
-    RAM_OUT = "ro"
     RAM_IN = "ri"
+    RAM_OUT = "ro"
     INSTR_OUT = "io"
     INSTR_IN = "ii"
-    COUNTER_OUT = "co"
-    COUNTER_IN = "j"  # jump
-    COUNTER_INCREMENT = "ce"  # enable
     REG_A_IN = "ai"
     REG_A_OUT = "ao"
-    REG_B_IN = "bi"
-    REG_B_OUT = "bo"
     ALU_OUT = "eo"
     SUBTRACT = "su"
-    CARRY_BIT = "cy"
+    REG_B_IN = "bi"
     OUTPUT_IN = "oi"
+    COUNTER_INCREMENT = "ce"  # enable
+    COUNTER_OUT = "co"
+    COUNTER_IN = "j"  # jump
 
+    REG_B_OUT = "bo"  # not used (not connected in original)
+
+    CARRY_BIT = "cy"
     CLOCK = "clk"
 
     # Note that in the original computer some of these signals
