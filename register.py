@@ -12,7 +12,9 @@ class Register(Receiver):
         self.signals = signals
         self.signals.listen(self)
         self.bus = bus
+        # load is move data from bus to register (with clock pulse)
         self.my_load_signal = my_load_signal
+        # enable is move data from register to bus
         self.my_enable_signal = my_enable_signal
         self.value = 0
         self.load_set = 0
