@@ -18,6 +18,7 @@ class ALU(RegisterOut):
         self.bit_count = bit_count
         self.carry = 0
         self.subtract = 0
+        self.enabled = 0  # output to bus
 
     def twos_complement_negation(self, x):
         assert 0 <= x < self.max_plus_one
@@ -37,6 +38,10 @@ class ALU(RegisterOut):
             self.value %= self.max_plus_one
             self.carry = 1
 
+        if self.enabled:
+            # put result on bus again
+            super().receive_signal(Signals.ALU_OUT, 1)
+
     def receive_signal(self, code: str, value: int):
         super().receive_signal(code, value)
         if code == Signals.CLOCK:
@@ -46,6 +51,9 @@ class ALU(RegisterOut):
             self.add()
         elif code == Signals.SUBTRACT:
             self.subtract = value
+            self.add()
+        elif code == Signals.ALU_OUT:
+            self.enabled = value
 
 
 def test():

@@ -8,6 +8,7 @@ class ASM(IntEnum):
     NOP = 0
     LDA = 1
     ADD = 2
+    SUB = 3
     OUT = 14
     HLT = 15
 
@@ -23,6 +24,12 @@ MICROCODE = {
     ASM.ADD: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.REG_B_IN),
               (Signals.ALU_OUT, Signals.REG_A_IN)),
+    # add the value from the given memory address to the value in register A
+    # and store the result in register A
+
+    ASM.SUB: ((Signals.INSTR_OUT, Signals.MAR_IN),
+              (Signals.RAM_OUT, Signals.REG_B_IN),
+              (Signals.ALU_OUT, Signals.REG_A_IN, Signals.SUBTRACT)),
     # add the value from the given memory address to the value in register A
     # and store the result in register A
 

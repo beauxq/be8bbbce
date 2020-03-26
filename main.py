@@ -41,16 +41,25 @@ class Computer():
 def main():
     computer = Computer()
 
-    computer.ram.memory[0] = 0b00011110
-    computer.ram.memory[1] = 0b00101111
-    computer.ram.memory[2] = 0b11100000
-    computer.ram.memory[3] = 0b11110000
+    computer.ram.memory[0] = 0b00011110  # LDA 14
+    computer.ram.memory[1] = 0b00101111  # ADD 15
+    computer.ram.memory[2] = 0b11100000  # OUT
+    computer.ram.memory[3] = 0b11110000  # HLT
     computer.ram.memory[0b1110] = 28
     computer.ram.memory[0b1111] = 14
 
     computer.clock.go()
 
     computer.control.reset()
+
+    computer.ram.memory[0] = 0b00011111  # LDA 15
+    computer.ram.memory[1] = 0b00101110  # ADD 14
+    computer.ram.memory[2] = 0b00111101  # SUB 13
+    computer.ram.memory[3] = 0b11100000  # OUT
+    computer.ram.memory[4] = 0b11110000  # HLT
+    computer.ram.memory[13] = 7
+    computer.ram.memory[14] = 6
+    computer.ram.memory[15] = 5
 
     computer.clock.go()
 
