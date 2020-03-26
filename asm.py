@@ -14,6 +14,7 @@ class ASM(IntEnum):
     JMP = 6
     JC = 7
     JZ = 8
+    JI = 9  # * my addition - jump indirect
     OUT = 14
     HLT = 15
 
@@ -44,7 +45,7 @@ MICROCODE = {
     # store value from register A into given memory address
 
     ASM.LDI: ((Signals.INSTR_OUT, Signals.REG_A_IN), (), ()),
-    # store value from instruction (4 lsb) into register A
+    # store given value into register A
 
     ASM.JMP: ((Signals.INSTR_OUT, Signals.COUNTER_IN), (), ()),
     # store given memory address into program counter
@@ -54,6 +55,10 @@ MICROCODE = {
 
     # ASM.JZ: Control gives either JMP or NOP
     # store given memory address into program counter if zero flag set
+
+    ASM.JI: ((Signals.INSTR_OUT, Signals.MAR_IN),
+             (Signals.RAM_OUT, Signals.COUNTER_IN), ()),
+    # load value at given memory address into program counter
 
     ASM.OUT: ((Signals.REG_A_OUT, Signals.OUTPUT_IN), (), ()),
     # copy the value from register A to output

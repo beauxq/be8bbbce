@@ -174,6 +174,25 @@ def main():
 
     computer.clock.go(2000)
 
+    computer.control.reset()
+
+    print(" jump indirect")
+    computer.ram.memory[0] = 0b01010011  # LDI 3
+    computer.ram.memory[1] = 0b01001111  # STA 15
+    computer.ram.memory[2] = 0b01101010  # JMP 10
+    computer.ram.memory[3] = 0b01010110  # LDI 6
+    computer.ram.memory[4] = 0b01001111  # STA 15
+    computer.ram.memory[5] = 0b01101010  # JMP 10
+    computer.ram.memory[6] = 0b01011001  # LDI 9
+    computer.ram.memory[7] = 0b01001111  # STA 15
+    computer.ram.memory[8] = 0b01101010  # JMP 10
+    computer.ram.memory[9] = 0b11110000  # HLT
+    computer.ram.memory[10] = 0b00011111  # LDA 15
+    computer.ram.memory[11] = 0b11100000  # OUT
+    computer.ram.memory[12] = 0b10011111  # JI 15
+
+    computer.clock.go()
+
 
 if __name__ == "__main__":
     main()
