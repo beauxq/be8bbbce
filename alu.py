@@ -44,7 +44,7 @@ class ALU(RegisterOut):
 
     def receive_signal(self, code: str, value: int):
         super().receive_signal(code, value)
-        if code == Signals.CLOCK:
+        if (code == Signals.CLOCK) and (not value):
             # both clock going high and going low
             # in original computer, this is happening
             # constantly all the time and needs no signal
