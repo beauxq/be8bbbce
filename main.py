@@ -43,6 +43,7 @@ class Computer():
 def main():
     computer = Computer()
 
+    print(" add 28 + 14")
     computer.ram.memory[0] = 0b00011110  # LDA 14
     computer.ram.memory[1] = 0b00101111  # ADD 15
     computer.ram.memory[2] = 0b11100000  # OUT
@@ -54,6 +55,7 @@ def main():
 
     computer.control.reset()
 
+    print(" 5 + 6 - 7")
     computer.ram.memory[0] = 0b00011111  # LDA 15
     computer.ram.memory[1] = 0b00101110  # ADD 14
     computer.ram.memory[2] = 0b00111101  # SUB 13
@@ -67,6 +69,7 @@ def main():
 
     computer.control.reset()
 
+    print(" count by 3")
     computer.ram.memory[0] = 0b01010011  # LDI 3
     computer.ram.memory[1] = 0b01001111  # STA 15
     computer.ram.memory[2] = 0b01010000  # LDI 0
@@ -78,6 +81,7 @@ def main():
 
     computer.control.reset()
 
+    print(" bounce between 0 and 256")
     computer.ram.memory[0] = 0b11100000  # OUT
     computer.ram.memory[1] = 0b00101111  # ADD 15
     computer.ram.memory[2] = 0b01110100  # JC 4
@@ -89,6 +93,86 @@ def main():
     computer.ram.memory[15] = 32
 
     computer.clock.go(400)
+
+    computer.control.reset()
+
+    print(" Matthew Kudzin multiply with no conditional jump")
+    """
+    0:   LDI   0
+1:    STA  15
+2:    LDI    1
+3:    STA   14
+4:    LDA   7
+5:    SUB   14
+6:    STA    7
+7:     <x>
+8:    LDA   15
+9:    ADD   13
+10:  STA   15
+11:   OUT
+12:  JMP   4
+13:  <y>
+    """
+    computer.ram.memory[0] = 0b01010000  # LDI 0
+    computer.ram.memory[1] = 0b01001111  # STA 15
+    computer.ram.memory[2] = 0b01010001  # LDI 1
+    computer.ram.memory[3] = 0b01001110  # STA 14
+    computer.ram.memory[4] = 0b00010111  # LDA 7
+    computer.ram.memory[5] = 0b00111110  # SUB 14
+    computer.ram.memory[6] = 0b01000111  # STA 7
+    computer.ram.memory[7] = 0b00000111  # x = 7  interpreted as NOP/HLT
+    computer.ram.memory[8] = 0b00011111  # LDA 15
+    computer.ram.memory[9] = 0b00101101  # ADD 13
+    computer.ram.memory[10] = 0b01001111  # STA 15
+    computer.ram.memory[11] = 0b11100000  # OUT
+    computer.ram.memory[12] = 0b01100100  # JMP 4
+    computer.ram.memory[13] = 0b00000110  # y = 6
+
+    computer.clock.go()
+
+    computer.control.reset()
+
+    print(" Ben Eater's multiplication")
+    computer.ram.memory[0] = 0b00011110  # LDA 14
+    computer.ram.memory[1] = 0b00111100  # SUB 12
+    computer.ram.memory[2] = 0b01110110  # JC  6
+    computer.ram.memory[3] = 0b00011101  # LDA 13
+    computer.ram.memory[4] = 0b11100000  # OUT
+    computer.ram.memory[5] = 0b11110000  # HLT
+    computer.ram.memory[6] = 0b01001110  # STA 14
+    computer.ram.memory[7] = 0b00011101  # LDA 13
+    computer.ram.memory[8] = 0b00101111  # ADD 15
+    computer.ram.memory[9] = 0b01001101  # STA 13
+    computer.ram.memory[10] = 0b01100000  # JMP 0
+    computer.ram.memory[11] = 0b00000000  # NOP
+    computer.ram.memory[12] = 0b00000001  # 1
+    computer.ram.memory[13] = 0b00000000  # product = 0
+    computer.ram.memory[14] = 0b00000111  # x = 7
+    computer.ram.memory[15] = 0b00000110  # y = 6
+
+    computer.clock.go()
+
+    computer.control.reset()
+
+    print(" Ben Eater's fibonacci")
+    computer.ram.memory[0] = 0b01010001  # LDI 1
+    computer.ram.memory[1] = 0b01001110  # STA 14
+    computer.ram.memory[2] = 0b01010000  # LDI 0
+    computer.ram.memory[3] = 0b11100000  # OUT
+    computer.ram.memory[4] = 0b00101110  # ADD 14
+    computer.ram.memory[5] = 0b01001111  # STA 15
+    computer.ram.memory[6] = 0b00011110  # LDA 14
+    computer.ram.memory[7] = 0b01001101  # STA 13
+    computer.ram.memory[8] = 0b00011111  # LDA 15
+    computer.ram.memory[9] = 0b01001110  # STA 14
+    computer.ram.memory[10] = 0b00011101  # LDA 13
+    computer.ram.memory[11] = 0b01110000  # JC  0
+    computer.ram.memory[12] = 0b01100011  # JMP 3
+    computer.ram.memory[13] = 0b00000000  # 0
+    computer.ram.memory[14] = 0b00000000  # 0
+    computer.ram.memory[15] = 0b00000000  # 0
+
+    computer.clock.go(2000)
 
 
 if __name__ == "__main__":
