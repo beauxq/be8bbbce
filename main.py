@@ -63,6 +63,17 @@ def main():
 
     computer.clock.go()
 
+    computer.control.reset()
+
+    computer.ram.memory[0] = 0b01010011  # LDI 3
+    computer.ram.memory[1] = 0b01001111  # STA 15
+    computer.ram.memory[2] = 0b01010000  # LDI 0
+    computer.ram.memory[3] = 0b00101111  # ADD 15
+    computer.ram.memory[4] = 0b11100000  # OUT
+    computer.ram.memory[5] = 0b01100011  # JMP 3
+
+    computer.clock.go(99999999999, 0.05)
+
 
 if __name__ == "__main__":
     main()
