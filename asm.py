@@ -12,6 +12,8 @@ class ASM(IntEnum):
     STA = 4
     LDI = 5
     JMP = 6
+    JC = 7
+    JZ = 8
     OUT = 14
     HLT = 15
 
@@ -26,13 +28,14 @@ MICROCODE = {
 
     ASM.ADD: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.REG_B_IN),
-              (Signals.ALU_OUT, Signals.REG_A_IN)),
+              (Signals.ALU_OUT, Signals.REG_A_IN, Signals.FLAGS_IN)),
     # add the value from the given memory address to the value in register A
     # and store the result in register A
 
     ASM.SUB: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.REG_B_IN),
-              (Signals.ALU_OUT, Signals.REG_A_IN, Signals.SUBTRACT)),
+              (Signals.ALU_OUT, Signals.REG_A_IN,
+               Signals.SUBTRACT, Signals.FLAGS_IN)),
     # add the value from the given memory address to the value in register A
     # and store the result in register A
 
@@ -45,6 +48,12 @@ MICROCODE = {
 
     ASM.JMP: ((Signals.INSTR_OUT, Signals.COUNTER_IN), (), ()),
     # store given memory address into program counter
+
+    # ASM.JC: Control gives either JMP or NOP
+    # store given memory address into program counter if carry flag set
+
+    # ASM.JZ: Control gives either JMP or NOP
+    # store given memory address into program counter if zero flag set
 
     ASM.OUT: ((Signals.REG_A_OUT, Signals.OUTPUT_IN), (), ()),
     # copy the value from register A to output

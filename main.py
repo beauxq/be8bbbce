@@ -7,6 +7,7 @@ from ram import Ram
 from programcounter import ProgramCounter
 from output import Output
 from instructionregister import InstructionRegister
+from flags import Flags
 from control import Control
 
 
@@ -35,7 +36,8 @@ class Computer():
         self.pc = ProgramCounter(self.signals, self.bus, ADDRESS_LENGTH)
         self.out = Output(self.signals, self.bus, BIT_COUNT)
         self.ir = InstructionRegister(self.signals, self.bus, ADDRESS_LENGTH)
-        self.control = Control(self.signals, self.ir)
+        self.flags = Flags(self.signals, self.alu)
+        self.control = Control(self.signals, self.ir, self.flags)
 
 
 def main():
@@ -72,7 +74,21 @@ def main():
     computer.ram.memory[4] = 0b11100000  # OUT
     computer.ram.memory[5] = 0b01100011  # JMP 3
 
-    computer.clock.go(99999999999, 0.05)
+    computer.clock.go(200)
+
+    computer.control.reset()
+
+    computer.ram.memory[0] = 0b11100000  # OUT
+    computer.ram.memory[1] = 0b00101111  # ADD 15
+    computer.ram.memory[2] = 0b01110100  # JC 4
+    computer.ram.memory[3] = 0b01100000  # JMP 0
+    computer.ram.memory[4] = 0b00111111  # SUB 15
+    computer.ram.memory[5] = 0b11100000  # OUT
+    computer.ram.memory[6] = 0b10000000  # JZ 0
+    computer.ram.memory[7] = 0b01100100  # JMP 4
+    computer.ram.memory[15] = 32
+
+    computer.clock.go(400)
 
 
 if __name__ == "__main__":

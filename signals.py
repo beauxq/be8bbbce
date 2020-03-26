@@ -21,6 +21,7 @@ class Signals:
     COUNTER_INCREMENT = "ce"  # enable
     COUNTER_OUT = "co"
     COUNTER_IN = "j"  # jump
+    FLAGS_IN = "fi"
 
     REG_B_OUT = "bo"
     # B out not used (in original, ability to write to bus

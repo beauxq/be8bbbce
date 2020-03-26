@@ -1,6 +1,7 @@
 from receiver import Receiver
 from signals import Signals
 from instructionregister import InstructionRegister
+from flags import Flags
 from asm import ASM, MICROCODE
 
 
@@ -10,10 +11,14 @@ class Control(Receiver):
         (Signals.RAM_OUT, Signals.INSTR_IN, Signals.COUNTER_INCREMENT),
     )
 
-    def __init__(self, signals: Signals, ir: InstructionRegister):
+    def __init__(self,
+                 signals: Signals,
+                 ir: InstructionRegister,
+                 flags: Flags):
         self.signals = signals
         self.signals.listen(self)
         self.ir = ir
+        self.flags = flags
         self.step = 0
 
     def microcode(self):
@@ -21,6 +26,13 @@ class Control(Receiver):
             return Control.FETCH[self.step]
 
         instruction = self.ir.value >> self.ir.address_length
+
+        # conditional jump is either JMP or NOP
+        if instruction == ASM.JC:
+            instruction = ASM.JMP if self.flags.get_carry() else ASM.NOP
+        elif instruction == ASM.JZ:
+            instruction = ASM.JMP if self.flags.get_zero() else ASM.NOP
+
         return MICROCODE[instruction][self.step - 2]
 
     def execute(self):
