@@ -33,9 +33,11 @@ class Control(Receiver):
         # 5 microinstructions for each instruction
 
         # debug message
+        """
         instruction = self.ir.value >> self.ir.address_length
         if self.step == 2:
             print("found instruction:", ASM(instruction))
+        """
 
         # turn on current control word
         for signal in self.microcode():
