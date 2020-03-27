@@ -9,9 +9,9 @@ I programmed an emulator for that computer.
 
 It is a "simple-as-possible" architecture.
 
-Run main.py or visual.py
+Run main.py (text) or visual.py (gui).
 
-The visual uses the pygame python package that must be installed.
+The gui uses the pygame python package that must be installed.
 Note this bug with pygame: https://github.com/pygame/pygame/issues/201
 Don't resize the window from the corner. Use the sides.
 
