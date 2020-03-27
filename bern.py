@@ -1,46 +1,18 @@
-from signals import Signals
-from clock import Clock
-from register import RegisterInOut
-from bus import Bus
-from alu import ALU
-from ram import Ram
-from programcounter import ProgramCounter
-from output import Output
-from instructionregister import InstructionRegister
-from flags import Flags
-from control import Control
-
+from computer import Computer, INSTRUCTION_LENGTH
 from asm import Assembler, ASM
 
-
-INSTRUCTION_LENGTH = 4
 ADDRESS_LENGTH = 12
 BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH
 
 
-class Computer():
-    def __init__(self):
-        self.signals = Signals()
-        self.clock = Clock(self.signals)
-        self.bus = Bus()
-        self.reg_a = RegisterInOut(self.signals, self.bus,
-                                   Signals.REG_A_IN, Signals.REG_A_OUT)
-        self.reg_b = RegisterInOut(self.signals, self.bus,
-                                   Signals.REG_B_IN, Signals.REG_B_OUT)
-        self.alu = ALU(self.signals, self.bus,
-                       self.reg_a, self.reg_b, BIT_COUNT)
-        self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)
-        self.pc = ProgramCounter(self.signals, self.bus, ADDRESS_LENGTH)
-        self.out = Output(self.signals, self.bus, BIT_COUNT)
-        self.ir = InstructionRegister(self.signals, self.bus, ADDRESS_LENGTH)
-        self.flags = Flags(self.signals, self.alu)
-        self.control = Control(self.signals, self.ir, self.flags)
-
-
 def main():
-    a = Assembler(12)
+    a = Assembler(ADDRESS_LENGTH)
 
-    computer = Computer()
+    computer = Computer(ADDRESS_LENGTH)
+
+    # global utility constants
+    computer.ram.memory[4000] = 1 << (BIT_COUNT - 1)  # min signed
+    computer.ram.memory[4001] = 1
 
     print(" multiply subroutine")
     multiply_subroutine = [
@@ -75,6 +47,12 @@ def main():
     2036 result location
     """
 
+    address = 2000
+    for instruction in multiply_subroutine:
+        computer.ram.memory[address] = instruction
+        address += 1
+
+    # use the multiply subroutine
     computer.ram.memory[0] = a.m(ASM.LDI, 7)
     computer.ram.memory[1] = a.m(ASM.STA, 2033)  # a operand
     computer.ram.memory[2] = a.m(ASM.LDI, 6)
@@ -86,15 +64,84 @@ def main():
     computer.ram.memory[8] = a.m(ASM.OUT, 0)
     computer.ram.memory[9] = a.m(ASM.HLT, 0)
 
-    address = 2000
-    for instruction in multiply_subroutine:
+    computer.clock.go(1000)
+
+    computer.control.reset()
+
+    add_fractions_subroutine = [
+        a.m(ASM.LDA, 2140),
+        a.m(ASM.STA, 2147),
+        a.m(ASM.LDA, 2142),
+        a.m(ASM.STA, 2145),
+        a.m(ASM.LDA, 2141),
+        a.m(ASM.STA, 2148),
+        a.m(ASM.LDA, 2143),
+        a.m(ASM.STA, 2144),
+        a.m(ASM.LDA, 2148),
+        a.m(ASM.SUB, 2144),
+        a.m(ASM.JZ , 2127),
+        a.m(ASM.ADD, 4000),
+        a.m(ASM.JC , 2120),
+        a.m(ASM.LDA, 2144),
+        a.m(ASM.ADD, 2143),
+        a.m(ASM.STA, 2144),
+        a.m(ASM.LDA, 2145),
+        a.m(ASM.ADD, 2142),
+        a.m(ASM.STA, 2145),
+        a.m(ASM.JMP, 2108),
+        a.m(ASM.LDA, 2148),
+        a.m(ASM.ADD, 2141),
+        a.m(ASM.STA, 2148),
+        a.m(ASM.LDA, 2147),
+        a.m(ASM.ADD, 2140),
+        a.m(ASM.STA, 2147),
+        a.m(ASM.JMP, 2108),
+        a.m(ASM.LDA, 2147),
+        a.m(ASM.ADD, 2145),
+        a.m(ASM.STA, 2147),
+        a.m(ASM.JI , 2146)
+    ]
+    """
+    parameters:
+    2140  an  operand a numerator
+    2141  ad  operand a denominator
+    2142  bn  operand b numerator
+    2143  bd  operand b denominator
+    2146  pc return location
+
+    working variables:
+    2144  blcd
+    2145  bnm
+
+    result locations:
+    2147  anm   result numerator
+    2148  alcd  result denominator
+    """
+
+    address = 2100
+    for instruction in add_fractions_subroutine:
         computer.ram.memory[address] = instruction
         address += 1
 
-    computer.ram.memory[4000] = 1 << (BIT_COUNT - 1)  # min signed
-    computer.ram.memory[4001] = 1
+    # use the add fractions subroutine
+    computer.ram.memory[0] = a.m(ASM.LDI, 1)
+    computer.ram.memory[1] = a.m(ASM.STA, 2140)  # a operand numer
+    computer.ram.memory[2] = a.m(ASM.LDI, 4)
+    computer.ram.memory[3] = a.m(ASM.STA, 2141)  # a operand denom
+    computer.ram.memory[4] = a.m(ASM.LDI, 7)
+    computer.ram.memory[5] = a.m(ASM.STA, 2142)  # b operand numer
+    computer.ram.memory[6] = a.m(ASM.LDI, 12)
+    computer.ram.memory[7] = a.m(ASM.STA, 2143)  # b operand denom
+    computer.ram.memory[8] = a.m(ASM.LDI, 11)
+    computer.ram.memory[9] = a.m(ASM.STA, 2146)  # return program counter
+    computer.ram.memory[10] = a.m(ASM.JMP, 2100)  # add fractions subroutine
+    computer.ram.memory[11] = a.m(ASM.LDA, 2147)  # result numer
+    computer.ram.memory[12] = a.m(ASM.OUT, 0)
+    computer.ram.memory[13] = a.m(ASM.LDA, 2148)  # result denom
+    computer.ram.memory[14] = a.m(ASM.OUT, 0)
+    computer.ram.memory[15] = a.m(ASM.HLT, 0)
 
-    computer.clock.go(1000)
+    computer.clock.go()
 
 
 if __name__ == "__main__":
