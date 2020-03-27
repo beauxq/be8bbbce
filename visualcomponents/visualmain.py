@@ -5,6 +5,8 @@ from visualcomponents.irreader import IRReader
 import pygame
 from typing import Tuple
 
+MAX_CLOCK_HZ = 250
+
 
 class VisualMain:
     def __init__(self, computer: Computer):
@@ -14,7 +16,7 @@ class VisualMain:
         self.ram_reader = RamReader(computer.ram)
         self.i_r_reader = IRReader(computer.ir)
         self.paused = True
-        self.fps = 10
+        self.fps = 20
 
     def run(self):
         self.running = True
@@ -51,9 +53,9 @@ class VisualMain:
                     elif (event.key == pygame.K_c) and self.paused:
                         self.computer.clock.go_high()
                     elif event.key == pygame.K_LEFTBRACKET:
-                        self.fps = max(.5, self.fps / 1.25)
+                        self.fps = max(.5, self.fps / 1.4)
                     elif event.key == pygame.K_RIGHTBRACKET:
-                        self.fps = min(120, self.fps * 1.25)
+                        self.fps = min(MAX_CLOCK_HZ * 2, self.fps * 1.4)
                 if event.type == pygame.KEYUP:
                     if (event.key == pygame.K_c) and self.paused:
                         self.computer.clock.go_low()
@@ -112,8 +114,10 @@ class VisualMain:
         textRect.center = (x + (size * 2.5), y + self.led_size())
         self.screen.blit(text, textRect)
         # speed up
-        color = int(16 * ((self.fps * 2) ** .5))
-        text = font.render("]", True, (color, color, 120))
+        max_fps = MAX_CLOCK_HZ * 2
+        sqrt_max_fps = max_fps ** .5
+        color = int(252 * (self.fps ** .5) / sqrt_max_fps)
+        text = font.render("]", True, (color, color, 140))
         textRect = text.get_rect()
         textRect.center = (x + (size * 1.5), y + self.led_size())
         self.screen.blit(text, textRect)

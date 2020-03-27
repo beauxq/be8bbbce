@@ -3,7 +3,7 @@ from asm import Assembler, ASM
 
 
 def p(computer: Computer, a: Assembler):
-    """ bounce between 0 and 256 """
+    """ bounce between 0 and 256 - address 15 holds step size """
     computer.ram.memory[0] = a.m(ASM.OUT, 0)
     computer.ram.memory[1] = a.m(ASM.ADD, 15)
     computer.ram.memory[2] = a.m(ASM.JC, 4)
