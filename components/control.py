@@ -19,11 +19,11 @@ class Control(Receiver):
         self.signals.listen(self)
         self.ir = ir
         self.flags = flags
-        self.step = 0
+        self.value = 0  # microcode step
 
     def microcode(self):
-        if self.step < 2:
-            return Control.FETCH[self.step]
+        if self.value < 2:
+            return Control.FETCH[self.value]
 
         instruction = self.ir.value >> self.ir.address_length
 
@@ -33,7 +33,7 @@ class Control(Receiver):
         elif instruction == ASM.JZ:
             instruction = ASM.JMP if self.flags.get_zero() else ASM.NOP
 
-        return MICROCODE[instruction][self.step - 2]
+        return MICROCODE[instruction][self.value - 2]
 
     def execute(self):
         # turn off last control word
@@ -41,7 +41,7 @@ class Control(Receiver):
             self.signals.signal(signal, 0)
 
         # increment to next control word
-        self.step = (self.step + 1) % 5
+        self.value = (self.value + 1) % 5
         # 5 microinstructions for each instruction
 
         # debug message
@@ -67,5 +67,5 @@ class Control(Receiver):
 
     def reset(self):
         self.signals.signal(Signals.RESET, 1)
-        self.step = 4  # last step
+        self.value = 4  # last step
         self.execute()
