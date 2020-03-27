@@ -1,0 +1,190 @@
+from computer import Computer
+from components.register import Register
+from visualcomponents.ramreader import RamReader
+from visualcomponents.irreader import IRReader
+import pygame
+from typing import Tuple
+
+
+class VisualMain:
+    def __init__(self, computer: Computer):
+        self.screen = pygame.display.set_mode((700, 700), pygame.RESIZABLE)
+        self.computer = computer
+        self.running = False
+        self.ram_reader = RamReader(computer.ram)
+        self.i_r_reader = IRReader(computer.ir)
+        self.paused = True
+        self.fps = 10
+
+    def run(self):
+        self.running = True
+        pygame_clock = pygame.time.Clock()
+
+        while self.running:
+            pygame_clock.tick(self.fps)
+
+            if not self.paused:
+                # computer clock toggle
+                if self.computer.clock.value:
+                    self.computer.clock.go_low()
+                else:
+                    self.computer.clock.go_high()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                if event.type == pygame.VIDEORESIZE:
+                    # https://stackoverflow.com/questions/11603222/allowing-resizing-window-pygame
+                    old_surface_saved = self.screen
+                    self.screen = pygame.display.set_mode((event.w, event.h),
+                                                          pygame.RESIZABLE)
+                    self.screen.blit(old_surface_saved, (0, 0))
+                    del old_surface_saved
+                    # note this pygame bug with resizing window:
+                    # https://github.com/pygame/pygame/issues/201
+                    # Resizing from the corner of the window doesn't work.
+                if event.type == pygame.KEYDOWN:
+                    if (event.key == pygame.K_p) or (event.key == pygame.K_SPACE):
+                        self.paused = not self.paused
+                    elif event.key == pygame.K_r:
+                        self.computer.control.reset()
+                    elif (event.key == pygame.K_c) and self.paused:
+                        self.computer.clock.go_high()
+                    elif event.key == pygame.K_LEFTBRACKET:
+                        self.fps = max(.5, self.fps / 1.25)
+                    elif event.key == pygame.K_RIGHTBRACKET:
+                        self.fps = min(120, self.fps * 1.25)
+                if event.type == pygame.KEYUP:
+                    if (event.key == pygame.K_c) and self.paused:
+                        self.computer.clock.go_low()
+
+            self.screen.fill((180, 180, 160))
+
+            self.draw()
+
+            pygame.display.flip()
+
+    def draw(self):
+        bit_count = self.computer.bit_count
+
+        self.draw_value(self.computer.bus, bit_count, .5, .05, (1, 0, 0))
+        self.draw_value(self.computer.clock, 1, .3, .08, (0, 0, 1))
+        self.draw_value(self.computer.ram.mar,
+                        self.computer.address_length,
+                        .25, .22, (1, 1, 0))
+        self.draw_value(self.ram_reader, bit_count, .2, .4, (1, 0, 0))
+        self.i_r_reader.instruction_part = True
+        self.draw_value(self.i_r_reader,
+                        self.computer.instruction_length,
+                        .15, .7, (0, 0, 1))
+        self.i_r_reader.instruction_part = False
+        self.draw_value(self.i_r_reader,
+                        self.computer.address_length,
+                        .3, .7, (1, 1, 0))
+        self.draw_value(self.computer.control, 3, .1, .75, (0, 1, 0))
+        # right side
+        self.draw_value(self.computer.pc,
+                        self.computer.address_length,
+                        .75, .08, (0, 1, 0))
+        self.draw_value(self.computer.reg_a, bit_count, .85, .25, (1, 0, 0))
+        self.draw_value(self.computer.flags, 2, .96, .28, (0, 1, 0))
+        self.draw_value(self.computer.alu, bit_count, .76, .4, (1, 0, 0))
+        self.draw_value(self.computer.reg_b, bit_count, .85, .55, (1, 0, 0))
+
+        # controls
+        font = pygame.font.Font('freesansbold.ttf', int(self.led_size()) + 1)
+        # clock stuff
+        color = (0, 150, 0)
+        if self.paused:
+            color = (200, 0, 0)
+        x = self.screen.get_width() * .02
+        y = self.screen.get_height() * .1
+        size = self.led_size() * 2
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 4, size))
+        # pause
+        text = font.render('P', True, (10, 0, 120))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 3.5), y + self.led_size())
+        self.screen.blit(text, textRect)
+        # clock tick
+        text = font.render("C", True, (0, 150, 0))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 2.5), y + self.led_size())
+        self.screen.blit(text, textRect)
+        # speed up
+        color = int(16 * ((self.fps * 2) ** .5))
+        text = font.render("]", True, (color, color, 120))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 1.5), y + self.led_size())
+        self.screen.blit(text, textRect)
+        # slow down
+        text = font.render("[", True, (color, color, 120))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 0.5), y + self.led_size())
+        self.screen.blit(text, textRect)
+
+        # reset button
+        color = (120, 120, 170)
+        x = self.screen.get_width() * .02
+        y = self.screen.get_height() * .6
+        size = self.led_size() * 2
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size, size))
+        # r
+        text = font.render('R', True, (80, 80, 0))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 0.5), y + (size * 0.5))
+        self.screen.blit(text, textRect)
+
+        # output
+        color = (50, 0, 0)
+        x = self.screen.get_width() * .65
+        y = self.screen.get_height() * .7
+        size = self.led_size() * 3
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 3, size))
+        # number
+        font_o = pygame.font.Font('freesansbold.ttf',
+                                  (int(self.led_size()) + 1) * 2)
+        text = font_o.render(str(self.computer.out.value), True, (250, 20, 20))
+        textRect = text.get_rect()
+        textRect.center = (x + (size * 1.5), y + (size * 0.5))
+        self.screen.blit(text, textRect)
+
+    def led_size(self):
+        return (min(self.screen.get_width(), self.screen.get_height()) /
+                ((self.computer.bit_count * 3.5) + 4)
+               )
+
+    def draw_value(self,
+                   component: Register,
+                   bit_count: int,
+                   x_portion: float,
+                   y_portion: float,
+                   led_color: Tuple[float]):
+        """
+        component is anything with value attribute - duck typing
+        bit_count is number of LEDs to show
+        x_portion is [0, 1] x location on screen - 0 left, 1 right
+        y_portion is [0, 1] y location on screen - 0 top, 1 bottom
+        led_color is tuple of 3 rgb floats [0, 1]
+        """
+        bit_size = self.led_size()
+        width = bit_count * bit_size
+        x = (self.screen.get_width() - width) * x_portion
+        y = (self.screen.get_height() - bit_size) * y_portion
+        """
+        pygame.draw.rect(self.screen,
+                         (20, 20, 20),
+                         pygame.Rect(x, y, width, bit_size))
+                         """
+        value = component.value
+        radius = bit_size / 2
+        circle_y = y + radius
+        for bit in range(bit_count):
+            brightness = 255 if (value % 2) else 100
+            color = tuple((c * brightness for c in led_color))
+            circle_x = x + width - (bit_size * bit + radius)
+            pygame.draw.circle(self.screen,
+                               color,
+                               (int(circle_x), int(circle_y)),
+                               int(radius))
+            value >>= 1
