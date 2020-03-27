@@ -2,7 +2,7 @@ from computer import Computer, INSTRUCTION_LENGTH
 from asm import Assembler, ASM
 
 ADDRESS_LENGTH = 12
-BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH
+BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH  # 4 + 12 = 16
 
 
 def main():
@@ -13,6 +13,7 @@ def main():
     # global utility constants
     computer.ram.memory[4000] = 1 << (BIT_COUNT - 1)  # min signed
     computer.ram.memory[4001] = 1
+    computer.ram.memory[4002] = 0b1111111111111111  # -1 in 16 bits
 
     print(" multiply subroutine")
     multiply_subroutine = [
@@ -136,6 +137,24 @@ def main():
     computer.ram.memory[7] = a.m(ASM.LDA, 2253)  # result
     computer.ram.memory[8] = a.m(ASM.OUT, 0)
     computer.ram.memory[9] = a.m(ASM.HLT, 0)
+
+    computer.clock.go()
+
+    computer.control.reset()
+
+    print(" -9 / 2")
+    computer.ram.memory[0] = a.m(ASM.LDA, 15)
+    computer.ram.memory[1] = a.m(ASM.STA, 2250)  # a operand
+    computer.ram.memory[2] = a.m(ASM.LDI, 2)
+    computer.ram.memory[3] = a.m(ASM.STA, 2251)  # b operand
+    computer.ram.memory[4] = a.m(ASM.LDI, 7)
+    computer.ram.memory[5] = a.m(ASM.STA, 2252)  # return program counter
+    computer.ram.memory[6] = a.m(ASM.JMP, 2200)  # divide subroutine
+    computer.ram.memory[7] = a.m(ASM.LDA, 2253)  # result
+    computer.ram.memory[8] = a.m(ASM.OUT, 0)
+    computer.ram.memory[9] = a.m(ASM.HLT, 0)
+
+    computer.ram.memory[15] = 0b1111111111110111  # -9
 
     computer.clock.go()
 
