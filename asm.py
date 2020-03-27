@@ -60,6 +60,12 @@ MICROCODE = {
              (Signals.RAM_OUT, Signals.COUNTER_IN), ()),
     # load value at given memory address into program counter
 
+    # undefined nops
+    10: ((), (), ()),
+    11: ((), (), ()),
+    12: ((), (), ()),
+    13: ((), (), ()),
+
     ASM.OUT: ((Signals.REG_A_OUT, Signals.OUTPUT_IN), (), ()),
     # copy the value from register A to output
 

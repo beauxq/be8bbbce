@@ -3,6 +3,7 @@ from components.register import RegisterIn
 from components.signals import Signals
 from components.bus import Bus
 from typing import List
+from random import randrange
 
 
 class _MemoryAddressRegister(RegisterIn):
@@ -16,11 +17,18 @@ class _MemoryAddressRegister(RegisterIn):
 
 
 class Ram(Receiver):
-    def __init__(self, signals: Signals, bus: Bus, address_length: int):
+    def __init__(self,
+                 signals: Signals,
+                 bus: Bus,
+                 address_length: int,
+                 bit_count: int,
+                 clean_memory: bool):
         signals.listen(self)
         self.bus = bus
         self.mar = _MemoryAddressRegister(signals, bus, address_length)
-        self.memory: List[int] = [0 for _ in range(self.mar.address_count)]
+        self.memory: List[int] = \
+            [(0 if clean_memory else randrange(1 << bit_count))
+             for _ in range(self.mar.address_count)]
         self.ram_in = 0
 
     def receive_signal(self, code: str, value: int):

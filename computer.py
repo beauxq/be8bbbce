@@ -14,9 +14,11 @@ INSTRUCTION_LENGTH = 4
 
 
 class Computer():
-    def __init__(self, address_length: int):
+    def __init__(self, address_length: int, clean_memory=False):
+        self.address_length = address_length
+        self.instruction_length = INSTRUCTION_LENGTH
         # One word can contain an instruction and an address.
-        bit_count = INSTRUCTION_LENGTH + address_length
+        self.bit_count = INSTRUCTION_LENGTH + address_length
         # Some modules (registers, bus) don't need to know how many bits,
         # because they just use the Python int data structure for their values.
 
@@ -29,10 +31,11 @@ class Computer():
                                    Signals.REG_B_IN, Signals.REG_B_OUT)
         # The ALU needs to know how many bits to emulate overflow accurately.
         self.alu = ALU(self.signals, self.bus,
-                       self.reg_a, self.reg_b, bit_count)
-        self.ram = Ram(self.signals, self.bus, address_length)
+                       self.reg_a, self.reg_b, self.bit_count)
+        self.ram = Ram(self.signals, self.bus,
+                       address_length, self.bit_count, clean_memory)
         self.pc = ProgramCounter(self.signals, self.bus, address_length)
-        self.out = Output(self.signals, self.bus, bit_count)
+        self.out = Output(self.signals, self.bus, self.bit_count)
         self.ir = InstructionRegister(self.signals, self.bus, address_length)
         self.flags = Flags(self.signals, self.alu)
         self.control = Control(self.signals, self.ir, self.flags)
