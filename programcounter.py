@@ -15,6 +15,7 @@ class ProgramCounter(RegisterInOut):
             self.increment = value
         elif (code == Signals.CLOCK) and value:
             if self.increment:
+                # print("fetched instruction", self.value)
                 self.value += 1
                 # print("program counter:", self.value)
         self.value %= self.max_plus_one

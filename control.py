@@ -48,7 +48,8 @@ class Control(Receiver):
         """
         instruction = self.ir.value >> self.ir.address_length
         if self.step == 2:
-            print("found instruction:", ASM(instruction))
+            print("found instruction:", ASM(instruction),
+                  self.ir.value % (1 << self.ir.address_length))
         """
 
         # turn on current control word
