@@ -1,7 +1,7 @@
-from receiver import Receiver
-from signals import Signals
-from instructionregister import InstructionRegister
-from flags import Flags
+from components.receiver import Receiver
+from components.signals import Signals
+from components.instructionregister import InstructionRegister
+from components.flags import Flags
 from asm import ASM, MICROCODE
 
 

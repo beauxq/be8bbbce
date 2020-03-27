@@ -1,6 +1,6 @@
-from receiver import Receiver
-from bus import Bus
-from signals import Signals
+from components.receiver import Receiver
+from components.bus import Bus
+from components.signals import Signals
 
 
 class Register(Receiver):

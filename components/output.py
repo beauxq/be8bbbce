@@ -1,6 +1,6 @@
-from register import RegisterIn
-from signals import Signals
-from bus import Bus
+from components.register import RegisterIn
+from components.signals import Signals
+from components.bus import Bus
 
 
 class Output(RegisterIn):

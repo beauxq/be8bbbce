@@ -1,6 +1,6 @@
-from register import RegisterInOut
-from signals import Signals
-from bus import Bus
+from components.register import RegisterInOut
+from components.signals import Signals
+from components.bus import Bus
 
 
 class ProgramCounter(RegisterInOut):

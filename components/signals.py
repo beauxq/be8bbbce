@@ -1,4 +1,4 @@
-from receiver import Receiver
+from components.receiver import Receiver
 from typing import List
 
 

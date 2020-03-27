@@ -1,4 +1,4 @@
-from signals import Signals
+from components.signals import Signals
 
 from enum import IntEnum
 

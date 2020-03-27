@@ -1,14 +1,14 @@
-from signals import Signals
-from clock import Clock
-from register import RegisterInOut
-from bus import Bus
-from alu import ALU
-from ram import Ram
-from programcounter import ProgramCounter
-from output import Output
-from instructionregister import InstructionRegister
-from flags import Flags
-from control import Control
+from components.signals import Signals
+from components.clock import Clock
+from components.register import RegisterInOut
+from components.bus import Bus
+from components.alu import ALU
+from components.ram import Ram
+from components.programcounter import ProgramCounter
+from components.output import Output
+from components.instructionregister import InstructionRegister
+from components.flags import Flags
+from components.control import Control
 
 INSTRUCTION_LENGTH = 4
 
