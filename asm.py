@@ -68,6 +68,14 @@ MICROCODE = {
 }
 
 
+class Assembler:
+    def __init__(self, address_length: int):
+        self.address_length = address_length
+
+    def m(self, asm: ASM, value: int):
+        return (asm << self.address_length) + value
+
+
 def test():
     print(MICROCODE[ASM.LDA])
 
