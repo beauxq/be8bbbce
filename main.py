@@ -1,51 +1,14 @@
-from signals import Signals
-from clock import Clock
-from register import RegisterInOut
-from bus import Bus
-from alu import ALU
-from ram import Ram
-from programcounter import ProgramCounter
-from output import Output
-from instructionregister import InstructionRegister
-from flags import Flags
-from control import Control
-
+from computer import Computer
 from asm import Assembler, ASM
 
 
-INSTRUCTION_LENGTH = 4
 ADDRESS_LENGTH = 4
-# One word can contain an instruction and an address.
-BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH
-
-# Some modules (registers, bus) don't need to know how many bits,
-# because they just use the Python int data structure for their values.
-# The ALU needs to know how many bits so it can emulate overflow accurately.
-
-
-class Computer():
-    def __init__(self):
-        self.signals = Signals()
-        self.clock = Clock(self.signals)
-        self.bus = Bus()
-        self.reg_a = RegisterInOut(self.signals, self.bus,
-                                   Signals.REG_A_IN, Signals.REG_A_OUT)
-        self.reg_b = RegisterInOut(self.signals, self.bus,
-                                   Signals.REG_B_IN, Signals.REG_B_OUT)
-        self.alu = ALU(self.signals, self.bus,
-                       self.reg_a, self.reg_b, BIT_COUNT)
-        self.ram = Ram(self.signals, self.bus, ADDRESS_LENGTH)
-        self.pc = ProgramCounter(self.signals, self.bus, ADDRESS_LENGTH)
-        self.out = Output(self.signals, self.bus, BIT_COUNT)
-        self.ir = InstructionRegister(self.signals, self.bus, ADDRESS_LENGTH)
-        self.flags = Flags(self.signals, self.alu)
-        self.control = Control(self.signals, self.ir, self.flags)
 
 
 def main():
-    a = Assembler(4)
+    a = Assembler(ADDRESS_LENGTH)
 
-    computer = Computer()
+    computer = Computer(ADDRESS_LENGTH)
 
     print(" add 28 + 14")
     computer.ram.memory[0] = a.m(ASM.LDA, 14)
@@ -103,19 +66,19 @@ def main():
     print(" Matthew Kudzin multiply with no conditional jump")
     """
     0:   LDI   0
-1:    STA  15
-2:    LDI    1
-3:    STA   14
-4:    LDA   7
-5:    SUB   14
-6:    STA    7
-7:     <x>
-8:    LDA   15
-9:    ADD   13
-10:  STA   15
-11:   OUT
-12:  JMP   4
-13:  <y>
+    1:    STA  15
+    2:    LDI    1
+    3:    STA   14
+    4:    LDA   7
+    5:    SUB   14
+    6:    STA    7
+    7:     <x>
+    8:    LDA   15
+    9:    ADD   13
+    10:  STA   15
+    11:   OUT
+    12:  JMP   4
+    13:  <y>
     """
     computer.ram.memory[0] = a.m(ASM.LDI, 0)
     computer.ram.memory[1] = a.m(ASM.STA, 15)
