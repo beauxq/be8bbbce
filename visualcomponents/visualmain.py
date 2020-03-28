@@ -18,6 +18,7 @@ class VisualMain:
         self.i_r_reader = IRReader(computer.ir)
         self.sw = SignalWatcher(computer.signals)
         self.paused = False
+        self.twos = False
         self.fps = 20
 
         self.load_fonts()
@@ -75,6 +76,8 @@ class VisualMain:
                         self.fps = max(.5, self.fps / 1.4)
                     elif event.key == pygame.K_RIGHTBRACKET:
                         self.fps = min(MAX_CLOCK_HZ * 2, self.fps * 1.4)
+                    elif event.key == pygame.K_2:
+                        self.twos = not self.twos
                 if event.type == pygame.KEYUP:
                     if (event.key == pygame.K_c) and self.paused:
                         self.computer.clock.go_low()
@@ -170,18 +173,31 @@ class VisualMain:
         text_rect.center = (x + (size * 0.5), y + (size * 0.5))
         self.screen.blit(text, text_rect)
 
+        # 2's complement output button
+        color = (170, 80, 170) if self.twos else (80, 80, 220)
+        x = self.screen.get_width() * .93
+        y = self.screen.get_height() * .71
+        size = self.led_size() * 2
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size, size))
+        # 2
+        text = self.button_font.render("2", True, (80, 200, 40))
+        text_rect = text.get_rect()
+        text_rect.center = (x + (size * 0.5), y + (size * 0.5))
+        self.screen.blit(text, text_rect)
 
         # output
         color = (50, 0, 0)
-        x = self.screen.get_width() * .65
+        x = self.screen.get_width() * .63
         y = self.screen.get_height() * .7
         size = self.led_size() * 3
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 3, size))
         # number
-        text = self.output_font.render(str(self.computer.out.value), True, (250, 20, 20))
-        textRect = text.get_rect()
-        textRect.center = (x + (size * 1.5), y + (size * 0.5))
-        self.screen.blit(text, textRect)
+        value = self.computer.out.unsigned_to_signed(self.computer.out.value) \
+            if self.twos else self.computer.out.value
+        text = self.output_font.render(str(value), True, (250, 20, 20))
+        text_rect = text.get_rect()
+        text_rect.center = (x + (size * 1.5), y + (size * 0.5))
+        self.screen.blit(text, text_rect)
 
     def led_size(self):
         return (min(self.screen.get_width(), self.screen.get_height()) /
@@ -239,11 +255,11 @@ class VisualMain:
                     self.screen.blit(text, text_rect)
             value >>= 1
         if (not vertical_label_height) and label_text:
-        font = self.label_font
-        if label_text.startswith(" "):
-            font = self.signal_font
-        text = font.render(label_text, True,
-                           (16, 16, 16), (240, 240, 240))
+            font = self.label_font
+            if label_text.startswith(" "):
+                font = self.signal_font
+            text = font.render(label_text, True,
+                               (16, 16, 16), (240, 240, 240))
             text_rect = text.get_rect()
             x_text = x + (width / 2)
             if isinstance(component, IRReader):
