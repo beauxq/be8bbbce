@@ -26,9 +26,12 @@ class Ram(Receiver):
         signals.listen(self)
         self.bus = bus
         self.mar = _MemoryAddressRegister(signals, bus, address_length)
-        self.memory: List[int] = \
-            [(0 if clean_memory else randrange(1 << bit_count))
-             for _ in range(self.mar.address_count)]
+        if clean_memory:
+            self.memory = [0 for _ in range(self.mar.address_count)]
+        else:  # random memory
+            value_range = 1 << bit_count
+            self.memory = [randrange(value_range)
+                           for _ in range(self.mar.address_count)]
         self.ram_in = 0
 
     def receive_signal(self, code: str, value: int):
