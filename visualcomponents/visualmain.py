@@ -23,11 +23,18 @@ class VisualMain:
         self.load_fonts()
 
     def load_fonts(self):
+        # print("setting font size", int(self.led_size()) + 1)
+        # print("width", self.screen.get_width())
         self.button_font = pygame.font.Font('freesansbold.ttf',
                                             int(self.led_size()) + 1)
         self.output_font = pygame.font.Font('freesansbold.ttf',
                                             (int(self.led_size()) + 1) * 2)
         self.label_font = self.button_font
+        self.signal_font = pygame.font.Font(
+            'visualcomponents/LiberationMono-Bold.ttf',
+            (int(self.led_size()) - 2) +
+            int((self.computer.bit_count - 8) * .125)
+        )
 
     def run(self):
         self.running = True
@@ -112,12 +119,16 @@ class VisualMain:
                         .76, .4, (1, 0, 0), "Sum Register")
         self.draw_value(self.computer.reg_b, bit_count,
                         .85, .55, (1, 0, 0), '"B" Register')
+        # a lot of math to get the position right for these labels
         self.draw_value(self.sw, 0,
-                        .55, .935, (1, 1, .8),
-                         " L  I   I  O O I   I  O O U I   I  E O    I   ")
+                        .003125 * bit_count + .525 +
+                        (self.screen.get_width() - 700) / 50000,
+                        -.001875 * bit_count + .95,
+                        (1, 1, .8),
+                        " L I I O O I I O O U I I E O   I ")
         self.draw_value(self.sw, 16,
                         .6, .9, (0, 0, 1),
-                        " H M R R  I  I  A A E S B O C C J F  ")
+                        " H M R R I I A A E S B O C C J F ")
 
         # controls
         # clock stuff
@@ -216,8 +227,11 @@ class VisualMain:
                                (int(circle_x), int(circle_y)),
                                int(radius))
             value >>= 1
-        text = self.label_font.render(label_text, True,
-                                      (16, 16, 16), (240, 240, 240))
+        font = self.label_font
+        if label_text.startswith(" "):
+            font = self.signal_font
+        text = font.render(label_text, True,
+                           (16, 16, 16), (240, 240, 240))
         textRect = text.get_rect()
         textRect.center = (x + (width / 2), y + (bit_size * 1.6))
         self.screen.blit(text, textRect)
