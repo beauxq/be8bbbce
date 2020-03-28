@@ -114,7 +114,7 @@ class VisualMain:
         self.draw_value(self.computer.reg_a, bit_count,
                         .85, .25, (1, 0, 0), '"A" Register')
         self.draw_value(self.computer.flags, 2,
-                        .96, .28, (0, 1, 0), "Flags")
+                        .96, .28, (0, 1, 0), ["CF", "ZF"], 2)
         self.draw_value(self.computer.alu, bit_count,
                         .76, .4, (1, 0, 0), "Sum Register")
         self.draw_value(self.computer.reg_b, bit_count,
