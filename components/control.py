@@ -6,6 +6,14 @@ from asm import ASM, MICROCODE
 
 
 class Control(Receiver):
+    OUT_SIGNALS = {  # all the signals that put something on the bus
+        Signals.RAM_OUT,
+        Signals.INSTR_OUT,
+        Signals.REG_A_OUT,
+        Signals.ALU_OUT,
+        Signals.COUNTER_OUT,
+        Signals.REG_B_OUT
+    }
     FETCH = (
         (Signals.COUNTER_OUT, Signals.MAR_IN),
         (Signals.RAM_OUT, Signals.INSTR_IN, Signals.COUNTER_INCREMENT),
@@ -53,8 +61,14 @@ class Control(Receiver):
         """
 
         # turn on current control word
+        anything_out = False
         for signal in self.microcode():
             self.signals.signal(signal, 1)
+            if signal in Control.OUT_SIGNALS:
+                anything_out = True
+        # if nothing sent to bus, clear bus
+        if not anything_out:
+            self.ir.bus.value = 0
 
     def receive_signal(self, code: str, value: int):
         if code == Signals.CLOCK:
