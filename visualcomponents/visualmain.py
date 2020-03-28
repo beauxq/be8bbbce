@@ -2,6 +2,7 @@ from computer import Computer
 from components.register import Register
 from visualcomponents.ramreader import RamReader
 from visualcomponents.irreader import IRReader
+from visualcomponents.signalwatcher import SignalWatcher
 import pygame
 from typing import Tuple
 
@@ -15,7 +16,8 @@ class VisualMain:
         self.running = False
         self.ram_reader = RamReader(computer.ram)
         self.i_r_reader = IRReader(computer.ir)
-        self.paused = True
+        self.sw = SignalWatcher(computer.signals)
+        self.paused = False
         self.fps = 20
 
         self.load_fonts()
@@ -110,6 +112,12 @@ class VisualMain:
                         .76, .4, (1, 0, 0), "Sum Register")
         self.draw_value(self.computer.reg_b, bit_count,
                         .85, .55, (1, 0, 0), '"B" Register')
+        self.draw_value(self.sw, 0,
+                        .55, .935, (1, 1, .8),
+                         " L  I   I  O O I   I  O O U I   I  E O    I   ")
+        self.draw_value(self.sw, 16,
+                        .6, .9, (0, 0, 1),
+                        " H M R R  I  I  A A E S B O C C J F  ")
 
         # controls
         # clock stuff
