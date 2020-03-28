@@ -38,3 +38,9 @@ class Clock(Receiver):
             sleep(delay_seconds)
             self.go_low()
             cycles -= 1
+
+    def toggle(self):
+        if self.value:
+            self.go_low()
+        else:
+            self.go_high()

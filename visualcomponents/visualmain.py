@@ -1,12 +1,12 @@
+from typing import Tuple, List, Union
 from computer import Computer
 from components.register import Register
 from visualcomponents.ramreader import RamReader
 from visualcomponents.irreader import IRReader
 from visualcomponents.signalwatcher import SignalWatcher
 import pygame
-from typing import Tuple, List, Union
 
-MAX_CLOCK_HZ = 250
+MAX_CLOCK_HZ_EXPONENT = 32
 
 
 class VisualMain:
@@ -19,7 +19,11 @@ class VisualMain:
         self.sw = SignalWatcher(computer.signals)
         self.paused = False
         self.twos = False
-        self.fps = 20
+
+        self.fps = 60
+        self.clock_hz_exponent = 10  # hz = 0.25 * 2 ** (x * .5)
+        self.clock_count = 0  # clock toggles since last change in hz
+        self.last_ms = 0  # time of last change in hz (ms)
 
         self.load_fonts()
 
@@ -37,50 +41,72 @@ class VisualMain:
             int((self.computer.bit_count - 8) * .125)
         )
 
+    def clock_count_reset(self):
+        self.clock_count = 0
+        self.last_ms = pygame.time.get_ticks()
+
+    def get_clock_hz(self):
+        return round(0.25 * (2 ** (self.clock_hz_exponent * 0.5)), 2)
+
+    def run_computer_clock(self):
+        passed_ms = pygame.time.get_ticks() - self.last_ms
+        clock_hz = self.get_clock_hz()
+        target_clock_toggles = int(passed_ms * clock_hz * 0.002)
+        # ^ * 2 for toggles, * 0.001 for seconds
+        # computer clock toggle until target
+        while self.clock_count < target_clock_toggles:
+            self.computer.clock.toggle()
+            self.clock_count += 1
+
+    def process_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.VIDEORESIZE:
+                # https://stackoverflow.com/questions/11603222/allowing-resizing-window-pygame
+                old_surface_saved = self.screen
+                self.screen = pygame.display.set_mode((event.w, event.h),
+                                                      pygame.RESIZABLE)
+                self.screen.blit(old_surface_saved, (0, 0))
+                del old_surface_saved
+                self.load_fonts()
+                # note this pygame bug with resizing window:
+                # https://github.com/pygame/pygame/issues/201
+                # Resizing from the corner of the window doesn't work.
+            if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_p) or (event.key == pygame.K_SPACE):
+                    self.paused = not self.paused
+                    self.clock_count_reset()
+                elif event.key == pygame.K_r:
+                    self.computer.control.reset()
+                elif (event.key == pygame.K_c) and self.paused:
+                    self.computer.clock.go_high()
+                elif event.key == pygame.K_LEFTBRACKET:
+                    if self.clock_hz_exponent > 0:
+                        self.clock_hz_exponent -= 1
+                    self.clock_count_reset()
+                elif event.key == pygame.K_RIGHTBRACKET:
+                    if self.clock_hz_exponent < MAX_CLOCK_HZ_EXPONENT:
+                        self.clock_hz_exponent += 1
+                    self.clock_count_reset()
+                elif event.key == pygame.K_2:
+                    self.twos = not self.twos
+            if event.type == pygame.KEYUP:
+                if (event.key == pygame.K_c) and self.paused:
+                    self.computer.clock.go_low()
+
     def run(self):
         self.running = True
         pygame_clock = pygame.time.Clock()
+        self.clock_count_reset()
 
         while self.running:
             pygame_clock.tick(self.fps)
 
             if not self.paused:
-                # computer clock toggle
-                if self.computer.clock.value:
-                    self.computer.clock.go_low()
-                else:
-                    self.computer.clock.go_high()
+                self.run_computer_clock()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                if event.type == pygame.VIDEORESIZE:
-                    # https://stackoverflow.com/questions/11603222/allowing-resizing-window-pygame
-                    old_surface_saved = self.screen
-                    self.screen = pygame.display.set_mode((event.w, event.h),
-                                                          pygame.RESIZABLE)
-                    self.screen.blit(old_surface_saved, (0, 0))
-                    del old_surface_saved
-                    self.load_fonts()
-                    # note this pygame bug with resizing window:
-                    # https://github.com/pygame/pygame/issues/201
-                    # Resizing from the corner of the window doesn't work.
-                if event.type == pygame.KEYDOWN:
-                    if (event.key == pygame.K_p) or (event.key == pygame.K_SPACE):
-                        self.paused = not self.paused
-                    elif event.key == pygame.K_r:
-                        self.computer.control.reset()
-                    elif (event.key == pygame.K_c) and self.paused:
-                        self.computer.clock.go_high()
-                    elif event.key == pygame.K_LEFTBRACKET:
-                        self.fps = max(.5, self.fps / 1.4)
-                    elif event.key == pygame.K_RIGHTBRACKET:
-                        self.fps = min(MAX_CLOCK_HZ * 2, self.fps * 1.4)
-                    elif event.key == pygame.K_2:
-                        self.twos = not self.twos
-                if event.type == pygame.KEYUP:
-                    if (event.key == pygame.K_c) and self.paused:
-                        self.computer.clock.go_low()
+            self.process_events()
 
             self.screen.fill((180, 180, 160))
 
@@ -103,13 +129,13 @@ class VisualMain:
         self.i_r_reader.instruction_part = True
         self.draw_value(self.i_r_reader,
                         self.computer.instruction_length,
-                        .2, .7, (0, 0, 1), "")
+                        .2, .68, (0, 0, 1), "")
         self.i_r_reader.instruction_part = False
         self.draw_value(self.i_r_reader,
                         self.computer.address_length,
-                        .35, .7, (1, 1, 0), "Instruction Register")
+                        .35, .68, (1, 1, 0), "Instruction Register")
         self.draw_value(self.computer.control, 3,
-                        .1, .75, (0, 1, 0), "Control")
+                        .1, .76, (0, 1, 0), "Control")
         # right side
         self.draw_value(self.computer.pc,
                         self.computer.address_length,
@@ -117,13 +143,13 @@ class VisualMain:
         self.draw_value(self.computer.reg_a, bit_count,
                         .85, .25, (1, 0, 0), '"A" Register')
         self.draw_value(self.computer.flags, 2,
-                        .96, .28, (0, 1, 0), ["CF", "ZF"], 2)
+                        .96, .29, (0, 1, 0), ["CF", "ZF"], 2)
         self.draw_value(self.computer.alu, bit_count,
                         .76, .4, (1, 0, 0), "Sum Register")
         self.draw_value(self.computer.reg_b, bit_count,
                         .85, .55, (1, 0, 0), '"B" Register')
         self.draw_value(self.sw, 16,
-                        .6, .9, (0, 0, 1),
+                        .6, .89, (0, 0, 1),
                         ["HLT", "MI", "RI", "RO", "IO", "II", "AI", "AO",
                          "ΣO", "SU", "BI", "OI", "CE", "CO", "J", "FI"],
                         3)
@@ -148,9 +174,7 @@ class VisualMain:
         text_rect.center = (x + (size * 2.5), y + self.led_size())
         self.screen.blit(text, text_rect)
         # speed up
-        max_fps = MAX_CLOCK_HZ * 2
-        sqrt_max_fps = max_fps ** .5
-        color = int(252 * (self.fps ** .5) / sqrt_max_fps)
+        color = int(252 * self.clock_hz_exponent / MAX_CLOCK_HZ_EXPONENT)
         text = self.button_font.render("]", True, (color, color, 140))
         text_rect = text.get_rect()
         text_rect.center = (x + (size * 1.5), y + self.led_size())
@@ -159,6 +183,12 @@ class VisualMain:
         text = self.button_font.render("[", True, (color, color, 120))
         text_rect = text.get_rect()
         text_rect.center = (x + (size * 0.5), y + self.led_size())
+        self.screen.blit(text, text_rect)
+        # clock hz
+        text = self.button_font.render(str(self.get_clock_hz()) + " hz",
+                                       True, (0, 0, 0))
+        text_rect = text.get_rect()
+        text_rect.center = (x + (size * 1.5), y - self.led_size())
         self.screen.blit(text, text_rect)
 
         # reset button
@@ -175,7 +205,7 @@ class VisualMain:
 
         # 2's complement output button
         color = (170, 80, 170) if self.twos else (80, 80, 220)
-        x = self.screen.get_width() * .93
+        x = self.screen.get_width() * .92
         y = self.screen.get_height() * .71
         size = self.led_size() * 2
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size, size))
@@ -187,7 +217,7 @@ class VisualMain:
 
         # output
         color = (50, 0, 0)
-        x = self.screen.get_width() * .63
+        x = self.screen.get_width() * .62
         y = self.screen.get_height() * .7
         size = self.led_size() * 3
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 3, size))
