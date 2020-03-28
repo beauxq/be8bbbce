@@ -1,3 +1,4 @@
+from math import log2
 from typing import Tuple, List, Union
 import pygame
 from computer import Computer
@@ -13,6 +14,7 @@ MAX_CLOCK_HZ_EXPONENT = 32
 
 class VisualMain:
     def __init__(self, computer: Computer):
+        pygame.display.set_caption("be8bbbce")
         self.screen = pygame.display.set_mode((700, 700), pygame.RESIZABLE)
         self.computer = computer
         self.running = False
@@ -27,16 +29,25 @@ class VisualMain:
         self.clock_count = 0  # clock toggles since last change in hz
         self.last_ms = 0  # time of last change in hz (ms)
 
-        self.load_fonts()
+        self.load_dimensions()
 
-    def load_fonts(self):
-        # print("setting font size", int(self.led_size()) + 1)
+    def load_dimensions(self):
+        # print("setting font size", int(self.led_size + 1)
         # print("width", self.screen.get_width())
+        self.led_size = (min(self.screen.get_width(),
+                             self.screen.get_height()) /
+                         ((self.computer.bit_count * 2.5) + 12))
+        # control multiplier
+        self.mult = .25 * log2(self.computer.bit_count) + .25
         self.button_font = pygame.font.Font('freesansbold.ttf',
-                                            int(self.led_size()) + 1)
+                                            int((self.led_size + 1)
+                                                * self.mult))
         self.output_font = pygame.font.Font('freesansbold.ttf',
-                                            (int(self.led_size()) + 1) * 2)
+                                            int((self.led_size + 1)
+                                                * 2 * self.mult))
         self.label_font = self.button_font
+        self.vertical_label_font = pygame.font.Font('freesansbold.ttf',
+                                                    int(self.led_size + 1))
 
     def clock_count_reset(self):
         self.clock_count = 0
@@ -66,7 +77,7 @@ class VisualMain:
                                                       pygame.RESIZABLE)
                 self.screen.blit(old_surface_saved, (0, 0))
                 del old_surface_saved
-                self.load_fonts()
+                self.load_dimensions()
                 # note this pygame bug with resizing window:
                 # https://github.com/pygame/pygame/issues/201
                 # Resizing from the corner of the window doesn't work.
@@ -158,41 +169,40 @@ class VisualMain:
             color = (200, 0, 0)
         x = self.screen.get_width() * .02
         y = self.screen.get_height() * .1
-        size = self.led_size() * 2
+        size = self.led_size * 2 * self.mult
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 4, size))
         # pause
         text = self.button_font.render('P', True, (10, 0, 120))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 3.5), y + self.led_size())
+        text_rect.center = (x + (size * 3.5), y + (size / 2))
         self.screen.blit(text, text_rect)
         # clock tick
         text = self.button_font.render("C", True, (0, 150, 0))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 2.5), y + self.led_size())
+        text_rect.center = (x + (size * 2.5), y + (size / 2))
         self.screen.blit(text, text_rect)
         # speed up
         color = int(252 * self.clock_hz_exponent / MAX_CLOCK_HZ_EXPONENT)
         text = self.button_font.render("]", True, (color, color, 140))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 1.5), y + self.led_size())
+        text_rect.center = (x + (size * 1.5), y + (size / 2))
         self.screen.blit(text, text_rect)
         # slow down
         text = self.button_font.render("[", True, (color, color, 120))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 0.5), y + self.led_size())
+        text_rect.center = (x + (size * 0.5), y + (size / 2))
         self.screen.blit(text, text_rect)
         # clock hz
         text = self.button_font.render(str(self.get_clock_hz()) + " hz",
                                        True, (0, 0, 0))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 1.5), y - self.led_size())
+        text_rect.center = (x + (size * 1.5), y - (size / 2))
         self.screen.blit(text, text_rect)
 
         # reset button
         color = (120, 120, 170)
         x = self.screen.get_width() * .02
         y = self.screen.get_height() * .6
-        size = self.led_size() * 2
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size, size))
         # r
         text = self.button_font.render('R', True, (80, 80, 0))
@@ -204,7 +214,6 @@ class VisualMain:
         color = (170, 80, 170) if self.twos else (80, 80, 220)
         x = self.screen.get_width() * .92
         y = self.screen.get_height() * .71
-        size = self.led_size() * 2
         pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size, size))
         # 2
         text = self.button_font.render("2", True, (80, 200, 40))
@@ -216,20 +225,16 @@ class VisualMain:
         color = (50, 0, 0)
         x = self.screen.get_width() * .62
         y = self.screen.get_height() * .7
-        size = self.led_size() * 3
-        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, size * 3, size))
+        height = self.led_size * 3 * self.mult
+        width = height * (bit_count / 8 + 1)
+        pygame.draw.rect(self.screen, color, pygame.Rect(x, y, width, height))
         # number
         value = self.computer.out.unsigned_to_signed(self.computer.out.value) \
             if self.twos else self.computer.out.value
         text = self.output_font.render(str(value), True, (250, 20, 20))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 1.5), y + (size * 0.5))
+        text_rect.center = (x + (width * 0.5), y + (height * 0.5))
         self.screen.blit(text, text_rect)
-
-    def led_size(self):
-        return (min(self.screen.get_width(), self.screen.get_height()) /
-                ((self.computer.bit_count * 2.5) + 12)
-               )
 
     def draw_value(self,
                    component: Register,
@@ -246,7 +251,7 @@ class VisualMain:
         y_portion is [0, 1] y location on screen - 0 top, 1 bottom
         led_color is tuple of 3 rgb floats [0, 1]
         """
-        bit_size = self.led_size()
+        bit_size = self.led_size
         width = bit_count * bit_size
         x = (self.screen.get_width() - width) * x_portion
         y = (self.screen.get_height() - bit_size) * y_portion
@@ -274,8 +279,8 @@ class VisualMain:
                 label_y = circle_y
                 for letter in this_label:
                     label_y += bit_size
-                    text = self.label_font.render(letter, True,
-                                                  (16, 16, 16))
+                    text = self.vertical_label_font.render(letter, True,
+                                                           (16, 16, 16))
                     text_rect = text.get_rect()
                     text_rect.center = (circle_x, label_y)
                     self.screen.blit(text, text_rect)
@@ -287,5 +292,5 @@ class VisualMain:
             x_text = x + (width / 2)
             if isinstance(component, IRReader):
                 x_text = x + (width / 3)
-            text_rect.center = (x_text, y + (bit_size * 1.6))
+            text_rect.center = (x_text, y + (bit_size * 1.6) + 2)
             self.screen.blit(text, text_rect)
