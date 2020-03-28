@@ -1,5 +1,5 @@
 from computer import Computer, INSTRUCTION_LENGTH
-from asm import Assembler, ASM
+from asm import Assembler
 
 from programs.programs16bit.multisub import p as p1
 from programs.programs16bit.dividsub import p as p2

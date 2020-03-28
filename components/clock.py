@@ -1,7 +1,6 @@
+from time import sleep
 from components.receiver import Receiver
 from components.signals import Signals
-
-from time import sleep
 
 
 class Clock(Receiver):

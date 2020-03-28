@@ -66,12 +66,6 @@ class RegisterOut(Register):
 
 class RegisterInOut(Register):
     """ register that can read from bus and write to bus """
-    def __init__(self,
-                 signals: Signals,
-                 bus: Bus,
-                 my_load_signal: str,
-                 my_enable_signal: str):
-        super().__init__(signals, bus, my_load_signal, my_enable_signal)
 
     def load_in(self):
         self.value = self.bus.value

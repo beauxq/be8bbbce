@@ -1,5 +1,5 @@
 from computer import Computer
-from asm import Assembler, ASM
+from asm import Assembler
 
 from programs.programs8bit.p1 import p as p1
 from programs.programs8bit.p2 import p as p2

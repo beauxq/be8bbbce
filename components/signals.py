@@ -1,5 +1,5 @@
-from components.receiver import Receiver
 from typing import List
+from components.receiver import Receiver
 
 
 class Signals:

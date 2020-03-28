@@ -1,10 +1,12 @@
 from typing import Tuple, List, Union
+import pygame
 from computer import Computer
 from components.register import Register
 from visualcomponents.ramreader import RamReader
 from visualcomponents.irreader import IRReader
 from visualcomponents.signalwatcher import SignalWatcher
-import pygame
+
+DRAW_BOX_FOR_REGISTERS = False
 
 MAX_CLOCK_HZ_EXPONENT = 32
 
@@ -35,11 +37,6 @@ class VisualMain:
         self.output_font = pygame.font.Font('freesansbold.ttf',
                                             (int(self.led_size()) + 1) * 2)
         self.label_font = self.button_font
-        self.signal_font = pygame.font.Font(
-            'visualcomponents/LiberationMono-Bold.ttf',
-            (int(self.led_size()) - 2) +
-            int((self.computer.bit_count - 8) * .125)
-        )
 
     def clock_count_reset(self):
         self.clock_count = 0
@@ -253,11 +250,10 @@ class VisualMain:
         width = bit_count * bit_size
         x = (self.screen.get_width() - width) * x_portion
         y = (self.screen.get_height() - bit_size) * y_portion
-        """
-        pygame.draw.rect(self.screen,
-                         (20, 20, 20),
-                         pygame.Rect(x, y, width, bit_size))
-                         """
+        if DRAW_BOX_FOR_REGISTERS:
+            pygame.draw.rect(self.screen,
+                             (120, 120, 100),
+                             pygame.Rect(x, y, width, bit_size))
         value = component.value
         radius = bit_size / 2
         circle_y = y + radius
@@ -285,11 +281,8 @@ class VisualMain:
                     self.screen.blit(text, text_rect)
             value >>= 1
         if (not vertical_label_height) and label_text:
-            font = self.label_font
-            if label_text.startswith(" "):
-                font = self.signal_font
-            text = font.render(label_text, True,
-                               (16, 16, 16), (240, 240, 240))
+            text = self.label_font.render(label_text, True,
+                                          (16, 16, 16), (240, 240, 240))
             text_rect = text.get_rect()
             x_text = x + (width / 2)
             if isinstance(component, IRReader):

@@ -1,6 +1,5 @@
-from components.signals import Signals
-
 from enum import IntEnum
+from components.signals import Signals
 
 
 class ASM(IntEnum):

@@ -1,9 +1,10 @@
+import pygame
+
 from visualcomponents.visualmain import VisualMain
 from computer import Computer
 from programs.programs8bit.p4 import p
 from asm import Assembler
 
-import pygame
 pygame.init()
 
 address_length = 4

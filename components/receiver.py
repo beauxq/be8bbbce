@@ -17,7 +17,7 @@ def test():
     except TypeError as e:
         print("test success:", e)
     else:
-        raise(AssertionError("Error should have been raised instantiating"))
+        raise AssertionError("Error should have been raised instantiating")
 
 
 if __name__ == "__main__":

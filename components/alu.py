@@ -1,5 +1,5 @@
 from components.bus import Bus
-from components.register import RegisterOut, Register, RegisterInOut
+from components.register import RegisterOut, Register
 from components.signals import Signals
 
 
