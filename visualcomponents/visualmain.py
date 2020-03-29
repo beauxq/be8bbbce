@@ -21,7 +21,7 @@ class VisualMain:
         self.ram_reader = RamReader(computer.ram)
         self.i_r_reader = IRReader(computer.ir)
         self.sw = SignalWatcher(computer.signals)
-        self.paused = False
+        self.paused = True
         self.twos = False
 
         self.fps = 60
