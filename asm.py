@@ -38,8 +38,8 @@ MICROCODE = {
               (Signals.RAM_OUT, Signals.REG_B_IN),
               (Signals.ALU_OUT, Signals.REG_A_IN,
                Signals.SUBTRACT, Signals.FLAGS_IN)),
-    # add the value from the given memory address to the value in register A
-    # and store the result in register A
+    # subtract the value in the given memory address from the value
+    # in register A and store the result in register A
 
     ASM.STA: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.REG_A_OUT, Signals.RAM_IN), ()),
