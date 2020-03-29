@@ -21,3 +21,23 @@ So then I made a 16-bit version with the exact same architecture.
 
 Then I programmed software subroutines for multiplication, division, adding fractions,
 and reducing fractions.
+
+Using these subroutines, I then programmed Ada Lovelace's Note G
+Bernoulli Number calculator. (Bernoulli numbers are not integers,
+but they are rational numbers.)
+
+The program will output the numerator and then the denominator.
+If you're only looking the visualization ( visualbernoulli.py ),
+you'll probably only see the denominator, unless you slow it
+down at the right time.
+You can see all the output in the console log.
+
+Resetting the computer after it halts (not clearing the memory) will calculate the
+next Bernoulli number after the last one it calculated. This is how Ada Lovelace
+planned to use this algorithm - let the machine run to calculate one Bernoulli
+number, then record that one, then start the machine again to calculate the next one.
+
+The 16-bit computer can calculate B14, but runs into overflow when calculating B16.
+The 32-bit computer can calculate B16 and beyond, but then it quickly runs into
+performance issues. (It's not a very efficient algorithm, along with doing all the
+multiplication by repeating adding.)

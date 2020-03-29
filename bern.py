@@ -8,6 +8,8 @@ from programs.programs16bit.gcdsub import p as p4
 from programs.programs16bit.addfrsub import p as p5
 from programs.programs16bit.reducsub import p as p6
 
+from programs.programs16bit.bernoulli import p as bern
+
 
 ADDRESS_LENGTH = 12
 BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH  # 4 + 12 = 16
@@ -50,6 +52,12 @@ def main():
 
     p6(computer, a)
     print(p6.__doc__)
+    computer.clock.go()
+
+    computer.control.reset()
+
+    bern(computer, a)
+    print(bern.__doc__)
     computer.clock.go()
 
 

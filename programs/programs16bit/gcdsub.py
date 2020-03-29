@@ -6,9 +6,10 @@ def p(computer: Computer, a: Assembler):
     """ gcd subroutine at 2300 """
 
     # global utility constants
-    computer.ram.memory[4000] = 1 << 15  # min signed
+    bit_count = computer.bit_count
+    computer.ram.memory[4000] = 1 << (bit_count - 1)  # min signed
     computer.ram.memory[4001] = 1
-    computer.ram.memory[4002] = 0b1111111111111111  # -1 in 16 bits
+    computer.ram.memory[4002] = (2 ** bit_count) - 1  # -1 in two's complement
 
     gcd_subroutine = [
         a.m(ASM.LDA, 2350),
