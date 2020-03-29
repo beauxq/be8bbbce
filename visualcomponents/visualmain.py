@@ -1,4 +1,5 @@
 from math import log2
+from collections import defaultdict
 from typing import Tuple, List, Union
 import pygame
 from computer import Computer
@@ -28,6 +29,11 @@ class VisualMain:
         self.clock_hz_exponent = 10  # hz = 0.25 * 2 ** (x * .5)
         self.clock_count = 0  # clock toggles since last change in hz
         self.last_ms = 0  # time of last change in hz (ms)
+
+        # I want the speed keys to repeat
+        pygame.key.set_repeat(500, 30)
+        # but not other keys
+        self.keys_pressed = defaultdict(lambda: False)
 
         self.load_dimensions()
 
@@ -83,12 +89,15 @@ class VisualMain:
                 # Resizing from the corner of the window doesn't work.
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_p) or (event.key == pygame.K_SPACE):
-                    self.paused = not self.paused
-                    self.clock_count_reset()
+                    if not self.keys_pressed[event.key]:
+                        self.paused = not self.paused
+                        self.clock_count_reset()
                 elif event.key == pygame.K_r:
-                    self.computer.control.reset()
+                    if not self.keys_pressed[event.key]:
+                        self.computer.control.reset()
                 elif (event.key == pygame.K_c) and self.paused:
-                    self.computer.clock.go_high()
+                    if not self.keys_pressed[event.key]:
+                        self.computer.clock.go_high()
                 elif event.key == pygame.K_LEFTBRACKET:
                     if self.clock_hz_exponent > 0:
                         self.clock_hz_exponent -= 1
@@ -98,10 +107,14 @@ class VisualMain:
                         self.clock_hz_exponent += 1
                     self.clock_count_reset()
                 elif event.key == pygame.K_2:
-                    self.twos = not self.twos
+                    if not self.keys_pressed[event.key]:
+                        self.twos = not self.twos
+
+                self.keys_pressed[event.key] = True
             if event.type == pygame.KEYUP:
                 if (event.key == pygame.K_c) and self.paused:
                     self.computer.clock.go_low()
+                self.keys_pressed[event.key] = False
 
     def run(self):
         self.running = True

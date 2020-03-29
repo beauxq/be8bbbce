@@ -32,6 +32,6 @@ class SignalWatcher(Receiver):
             if value:
                 self.value |= bit
             else:  # signal off
-                self.value &= (bit ^ 0b1111111111111111)
+                self.value &= ~bit
         elif code == Signals.RESET:
             self.value = 0
