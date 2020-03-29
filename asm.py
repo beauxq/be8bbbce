@@ -14,8 +14,8 @@ class ASM(IntEnum):
     JC = 7
     JZ = 8
     JI = 9  # * my addition - jump indirect
-    LIA = 10  # * my addition - load indirect
-    SIA = 11  # * my addition - store indirect
+    LIN = 10  # * my addition - load indirect
+    SIN = 11  # * my addition - store indirect
     OUT = 14
     HLT = 15
 
@@ -61,12 +61,12 @@ MICROCODE = {
              (Signals.RAM_OUT, Signals.COUNTER_IN), ()),
     # load value at given memory address into program counter
 
-    ASM.LIA: ((Signals.INSTR_OUT, Signals.MAR_IN),
+    ASM.LIN: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.REG_A_IN)),
     # load value from address in given address into register A
 
-    ASM.SIA: ((Signals.INSTR_OUT, Signals.MAR_IN),
+    ASM.SIN: ((Signals.INSTR_OUT, Signals.MAR_IN),
               (Signals.RAM_OUT, Signals.MAR_IN),
               (Signals.REG_A_OUT, Signals.RAM_IN)),
     # store value from register A into the address in the given memory address
