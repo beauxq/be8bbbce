@@ -1,4 +1,5 @@
 from enum import IntEnum
+from collections import defaultdict
 from components.signals import Signals
 
 
@@ -18,6 +19,25 @@ class ASM(IntEnum):
     SIN = 11  # * my addition - store indirect
     OUT = 14
     HLT = 15
+
+
+# machine code to assembly
+ASM_R = defaultdict(lambda: "NOP", {
+    ASM.NOP: "NOP",
+    ASM.LDA: "LDA",
+    ASM.ADD: "ADD",
+    ASM.SUB: "SUB",
+    ASM.STA: "STA",
+    ASM.LDI: "LDI",
+    ASM.JMP: "JMP",
+    ASM.JC: "JC ",
+    ASM.JZ: "JZ ",
+    ASM.JI: "JI ",
+    ASM.LIN: "LIN",
+    ASM.SIN: "SIN",
+    ASM.OUT: "OUT",
+    ASM.HLT: "HLT"
+})
 
 
 MICROCODE = {

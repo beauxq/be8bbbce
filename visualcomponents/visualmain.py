@@ -7,6 +7,7 @@ from components.register import Register
 from visualcomponents.ramreader import RamReader
 from visualcomponents.irreader import IRReader
 from visualcomponents.signalwatcher import SignalWatcher
+from asm import ASM_R
 
 DRAW_BOX_FOR_REGISTERS = False
 
@@ -43,7 +44,7 @@ class VisualMain:
         self.led_size = (min(self.screen.get_width(),
                              self.screen.get_height()) /
                          ((self.computer.bit_count * 2.5) + 12))
-        # control multiplier
+        # control size multiplier
         self.mult = .25 * log2(self.computer.bit_count) + .25
         self.button_font = pygame.font.Font('freesansbold.ttf',
                                             int((self.led_size + 1)
@@ -151,6 +152,17 @@ class VisualMain:
         self.draw_value(self.i_r_reader,
                         self.computer.instruction_length,
                         .2, .68, (0, 0, 1), "")
+
+        # instruction translator
+        if self.paused or self.clock_hz_exponent < 15:
+            text = self.button_font.render(ASM_R[self.i_r_reader.value],
+                                           True, (0, 0, 0))
+            text_rect = text.get_rect()
+            x = self.screen.get_width() * .2
+            y = self.screen.get_height() * .65
+            text_rect.center = (x, y)
+            self.screen.blit(text, text_rect)
+
         self.i_r_reader.instruction_part = False
         self.draw_value(self.i_r_reader,
                         self.computer.address_length,
