@@ -1,5 +1,4 @@
 from random import randrange
-from typing import List
 from components.receiver import Receiver
 from components.register import RegisterIn
 from components.signals import Signals

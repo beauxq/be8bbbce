@@ -1,5 +1,6 @@
-# Ben Eater's 8-bit Breadboard Computer Emulator
+# Ben Eater's 8-bit Breadboard Computer Emulator  
 ### (be8bbbce)
+--------------
 
 Ben Eater has a Youtube playlist building an 8-bit computer from scratch on breadboards.
 
@@ -11,10 +12,13 @@ It is a "simple-as-possible" architecture.
 
 Run main.py (text) or visual.py (gui).
 
-The gui uses the pygame python package that must be installed.
-Note this bug with pygame: https://github.com/pygame/pygame/issues/201
+The gui uses the pygame python package that must be installed.  
+Note this bug with resizing the window in pygame: https://github.com/pygame/pygame/issues/201  
 Don't resize the window from the corner. Use the sides.
 
+
+### Expansion and Note G:
+-------------------------
 
 I programmed the emulator so that I could easily change the number of bits.
 So then I made a 16-bit version with the exact same architecture.
@@ -33,7 +37,7 @@ down at the right time.
 You can see all the output in the console log.
 
 Resetting the computer after it halts (not clearing the memory) will calculate the
-next Bernoulli number after the last one it calculated. This is how Ada Lovelace
+next Bernoulli number after the last one it calculated. This might be how Ada Lovelace
 planned to use this algorithm - let the machine run to calculate one Bernoulli
 number, then record that one, then start the machine again to calculate the next one.
 

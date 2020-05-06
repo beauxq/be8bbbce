@@ -50,6 +50,7 @@ def p(computer: Computer, a: Assembler):
         # op6 v13 = v13 - v11
         # v13n = v13n - v11n; v13d = v11d
         # v13n, v13d = reduce(v13n, v13d)
+        # TODO: remove this reduce, there's no way this isn't already reduced
         a.m(ASM.LDA, 1130),
         a.m(ASM.SUB, 1110),
         a.m(ASM.STA, 2450),  # store in reduce parameter
