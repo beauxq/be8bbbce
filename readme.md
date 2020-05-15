@@ -31,7 +31,7 @@ Bernoulli Number calculator. (Bernoulli numbers are not integers,
 but they are rational numbers.)
 
 The program will output the numerator and then the denominator.
-If you're only looking the visualization ( visualbernoulli.py ),
+If you're only looking at the visualization ( visualbernoulli.py ),
 you'll probably only see the denominator, unless you slow it
 down at the right time.
 You can see all the output in the console log.
