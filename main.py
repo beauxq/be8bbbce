@@ -10,6 +10,7 @@ from programs.programs8bit.eatermult import p as p6
 from programs.programs8bit.fibonacci import p as p7
 from programs.programs8bit.jumpindirect import p as p8
 from programs.programs8bit.loadstoreindirect import p as p9
+from programs.programs8bit.divide import p as p10
 
 
 ADDRESS_LENGTH = 4
@@ -70,6 +71,12 @@ def main():
 
     p9(computer, a)
     print(p9.__doc__)
+    computer.clock.go()
+
+    computer.control.reset()
+
+    p10(computer, a)
+    print(p10.__doc__)
     computer.clock.go()
 
 
