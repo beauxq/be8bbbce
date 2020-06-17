@@ -11,6 +11,7 @@ from programs.programs8bit.fibonacci import p as p7
 from programs.programs8bit.jumpindirect import p as p8
 from programs.programs8bit.loadstoreindirect import p as p9
 from programs.programs8bit.divide import p as p10
+from programs.programs8bit.sqrt import p as p11
 
 
 ADDRESS_LENGTH = 4
@@ -77,6 +78,12 @@ def main():
 
     p10(computer, a)
     print(p10.__doc__)
+    computer.clock.go()
+
+    computer.control.reset()
+
+    p11(computer, a)
+    print(p11.__doc__)
     computer.clock.go()
 
 
