@@ -12,4 +12,4 @@ def p(computer: Computer, a: Assembler):
     computer.ram.memory[5] = a.m(ASM.OUT, 0)
     computer.ram.memory[6] = a.m(ASM.JZ, 0)
     computer.ram.memory[7] = a.m(ASM.JMP, 4)
-    computer.ram.memory[15] = 32
+    computer.ram.memory[15] = 16

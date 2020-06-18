@@ -13,6 +13,8 @@ from programs.programs8bit.loadstoreindirect import p as p9
 from programs.programs8bit.divide import p as p10
 from programs.programs8bit.sqrt import p as p11
 
+PS = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]
+
 
 ADDRESS_LENGTH = 4
 
@@ -22,69 +24,11 @@ def main():
 
     computer = Computer(ADDRESS_LENGTH)
 
-    p1(computer, a)
-    print(p1.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p2(computer, a)
-    print(p2.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p3(computer, a)
-    print(p3.__doc__)
-    computer.clock.go(200)
-
-    computer.control.reset()
-
-    p4(computer, a)
-    print(p4.__doc__)
-    computer.clock.go(400)
-
-    computer.control.reset()
-
-    p5(computer, a)
-    print(p5.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p6(computer, a)
-    print(p6.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p7(computer, a)
-    print(p7.__doc__)
-    computer.clock.go(2000)
-
-    computer.control.reset()
-
-    p8(computer, a)
-    print(p8.__doc__)
-    computer.clock.go(2000)
-
-    computer.control.reset()
-
-    p9(computer, a)
-    print(p9.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p10(computer, a)
-    print(p10.__doc__)
-    computer.clock.go()
-
-    computer.control.reset()
-
-    p11(computer, a)
-    print(p11.__doc__)
-    computer.clock.go()
+    for p in PS:
+        computer.control.reset()
+        p(computer, a)
+        print(p.__doc__)
+        computer.clock.go(2000)
 
 
 if __name__ == "__main__":
