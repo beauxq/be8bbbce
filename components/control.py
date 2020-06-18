@@ -43,10 +43,13 @@ class Control(Receiver):
 
         return MICROCODE[instruction][self.value - 2]
 
-    def execute(self):
-        # turn off last control word
+    def turn_off_current_signals(self):
         for signal in self.microcode():
             self.signals.signal(signal, 0)
+
+    def execute(self):
+        # turn off last control word
+        self.turn_off_current_signals()
 
         # increment to next control word
         self.value = (self.value + 1) % 5
@@ -81,5 +84,6 @@ class Control(Receiver):
 
     def reset(self):
         self.signals.signal(Signals.RESET, 1)
+        self.turn_off_current_signals()
         self.value = 4  # last step
         self.execute()
