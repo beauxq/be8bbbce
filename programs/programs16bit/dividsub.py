@@ -51,7 +51,7 @@ def p(computer: Computer, a: Assembler):
     integer division
     parameters:
     2250 a
-    2251 b  must be positive
+    2251 b  must be positive - divide by 0 makes infinite loop
     2252 pcreturnlocation
 
     output:
