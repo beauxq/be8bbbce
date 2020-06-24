@@ -18,6 +18,7 @@ class VisualMain:
     def __init__(self, computer: Computer):
         pygame.display.set_caption("be8bbbce")
         self.screen = pygame.display.set_mode((700, 700), pygame.RESIZABLE)
+        self.background_color = (180, 180, 160)  # imitating color of breadboard
         self.computer = computer
         self.running = False
         self.ram_reader = RamReader(computer.ram)
@@ -25,6 +26,9 @@ class VisualMain:
         self.sw = SignalWatcher(computer.signals)
         self.paused = True
         self.twos = False
+
+        self.pause_message_time = 2000  # total time to display message, milliseconds
+        self.pause_message_timer = 0  # time remaining to display message
 
         self.fps = 60
         self.clock_hz_exponent = 10  # hz = 0.25 * 2 ** (x * .5)
@@ -62,6 +66,9 @@ class VisualMain:
 
     def get_clock_hz(self):
         return round(0.25 * (2 ** (self.clock_hz_exponent * 0.5)), 2)
+    
+    def update_pause_message_timer(self):
+        self.pause_message_timer = max(self.pause_message_timer - 1000 // self.fps, 0)
 
     def run_computer_clock(self):
         passed_ms = pygame.time.get_ticks() - self.last_ms
@@ -110,6 +117,9 @@ class VisualMain:
                 elif event.key == pygame.K_2:
                     if not self.keys_pressed[event.key]:
                         self.twos = not self.twos
+                elif self.paused:  # any other key while paused
+                    # message for someone unfamiliar with controls
+                    self.pause_message_timer = self.pause_message_time
 
                 self.keys_pressed[event.key] = True
             if event.type == pygame.KEYUP:
@@ -125,12 +135,14 @@ class VisualMain:
         while self.running:
             pygame_clock.tick(self.fps)
 
+            self.update_pause_message_timer()
+
             if not self.paused:
                 self.run_computer_clock()
 
             self.process_events()
 
-            self.screen.fill((180, 180, 160))
+            self.screen.fill(self.background_color)
 
             self.draw()
 
@@ -223,6 +235,15 @@ class VisualMain:
         text_rect = text.get_rect()
         text_rect.center = (x + (size * 1.5), y - (size / 2))
         self.screen.blit(text, text_rect)
+        # pause message (for someone unfamiliar with controls)
+        if self.pause_message_timer > 0:
+            progress = ((-self.pause_message_timer) / self.pause_message_time) + 1
+            brightness = 4 * (progress - (progress ** 0.5)) + 1  # inverted brightness, because it's black
+            text = self.button_font.render("PAUSED - press P to toggle pause",
+                                           True, tuple(brightness * _ for _ in self.background_color))
+            text_rect = text.get_rect()
+            text_rect.topleft = (x + (size * 3.4), y + (size))
+            self.screen.blit(text, text_rect)
 
         # reset button
         color = (120, 120, 170)
