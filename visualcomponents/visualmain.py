@@ -171,7 +171,7 @@ class VisualMain:
                                            True, (0, 0, 0))
             text_rect = text.get_rect()
             x = self.screen.get_width() * .2
-            y = self.screen.get_height() * .65
+            y = self.screen.get_height() * .64
             text_rect.center = (x, y)
             self.screen.blit(text, text_rect)
 
