@@ -16,28 +16,28 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.ADD, 4000),
         a.m(ASM.JC , 2404),
         a.m(ASM.JMP, 2410),
-        a.m(ASM.LDI, 0),
+        a.m(ASM.LDI, 0),  # address 2404
         a.m(ASM.SUB, 2450),
         a.m(ASM.STA, 2450),
         a.m(ASM.LDI, 0),
         a.m(ASM.SUB, 2451),
         a.m(ASM.STA, 2451),
-        a.m(ASM.LDA, 2450),
+        a.m(ASM.LDA, 2450),  # address 2410
         a.m(ASM.STA, 2453),
         a.m(ASM.ADD, 4000),
         a.m(ASM.JC , 2415),
         a.m(ASM.JMP, 2418),
-        a.m(ASM.LDI, 0),
+        a.m(ASM.LDI, 0),  # address 2415
         a.m(ASM.SUB, 2453),
         a.m(ASM.STA, 2453),
-        a.m(ASM.LDA, 2453),
+        a.m(ASM.LDA, 2453),  # address 2418
         a.m(ASM.STA, 2350),
         a.m(ASM.LDA, 2451),
         a.m(ASM.STA, 2351),
         a.m(ASM.LDI, 2425),
         a.m(ASM.STA, 2352),
         a.m(ASM.JMP, 2300),
-        a.m(ASM.LDA, 2350),
+        a.m(ASM.LDA, 2350),  # address 2425
         a.m(ASM.STA, 2453),
         a.m(ASM.LDA, 2450),
         a.m(ASM.STA, 2250),
@@ -46,7 +46,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.LDI, 2434),
         a.m(ASM.STA, 2252),
         a.m(ASM.JMP, 2200),
-        a.m(ASM.LDA, 2253),
+        a.m(ASM.LDA, 2253),  # address 2434
         a.m(ASM.STA, 2450),
         a.m(ASM.LDA, 2451),
         a.m(ASM.STA, 2250),
@@ -55,7 +55,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.LDI, 2443),
         a.m(ASM.STA, 2252),
         a.m(ASM.JMP, 2200),
-        a.m(ASM.LDA, 2253),
+        a.m(ASM.LDA, 2253),  # address 2443
         a.m(ASM.STA, 2451),
         a.m(ASM.JI , 2452)
     ]

@@ -20,7 +20,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 2148),
         a.m(ASM.LDA, 2143),
         a.m(ASM.STA, 2144),
-        a.m(ASM.LDA, 2148),
+        a.m(ASM.LDA, 2148),  # address 2108
         a.m(ASM.SUB, 2144),
         a.m(ASM.JZ , 2127),
         a.m(ASM.ADD, 4000),
@@ -32,14 +32,14 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.ADD, 2142),
         a.m(ASM.STA, 2145),
         a.m(ASM.JMP, 2108),
-        a.m(ASM.LDA, 2148),
+        a.m(ASM.LDA, 2148),  # address 2120
         a.m(ASM.ADD, 2141),
         a.m(ASM.STA, 2148),
         a.m(ASM.LDA, 2147),
         a.m(ASM.ADD, 2140),
         a.m(ASM.STA, 2147),
         a.m(ASM.JMP, 2108),
-        a.m(ASM.LDA, 2147),
+        a.m(ASM.LDA, 2147),  # address 2127
         a.m(ASM.ADD, 2145),
         a.m(ASM.STA, 2147),
         a.m(ASM.JI , 2146)

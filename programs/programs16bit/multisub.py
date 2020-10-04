@@ -16,13 +16,13 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.ADD, 4000),
         a.m(ASM.JC, 2004),
         a.m(ASM.JMP, 2010),
-        a.m(ASM.LDI, 0),
+        a.m(ASM.LDI, 0),  # address 2004
         a.m(ASM.SUB, 2033),
         a.m(ASM.STA, 2033),
         a.m(ASM.LDI, 0),
         a.m(ASM.SUB, 2034),
         a.m(ASM.STA, 2034),
-        a.m(ASM.LDI, 0),
+        a.m(ASM.LDI, 0),  # address 2010
         a.m(ASM.STA, 2036),
         a.m(ASM.LDI, 0),
         a.m(ASM.ADD, 2033),
@@ -34,7 +34,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.SUB, 4001),
         a.m(ASM.STA, 2033),
         a.m(ASM.JMP, 2012),
-        a.m(ASM.JI, 2035)
+        a.m(ASM.JI, 2035)  # address 2022
     ]
     """
     2033 a operand

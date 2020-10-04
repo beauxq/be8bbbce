@@ -21,11 +21,11 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.SUB, 2351),
         a.m(ASM.STA, 2350),
         a.m(ASM.JMP, 2300),
-        a.m(ASM.LDA, 2351),
+        a.m(ASM.LDA, 2351),  # address 2309
         a.m(ASM.SUB, 2350),
         a.m(ASM.STA, 2351),
         a.m(ASM.JMP, 2300),
-        a.m(ASM.JI , 2352)
+        a.m(ASM.JI , 2352)  # address 2313
     ]
     """
     parameters:
