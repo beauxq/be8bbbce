@@ -1,15 +1,16 @@
 from components.receiver import Receiver
-from components.bus import Bus
 from components.signals import Signals
+from components.valueif import ValueInterface
 
 
-class Register(Receiver):
+class Register(ValueInterface, Receiver):
     """ base class for different types of registers """
     def __init__(self,
                  signals: Signals,
-                 bus: Bus,
+                 bus: ValueInterface,
                  my_load_signal: str,
                  my_enable_signal: str):
+        super().__init__()
         self.signals = signals
         self.signals.listen(self)
         self.bus = bus
@@ -44,7 +45,7 @@ class RegisterIn(Register):
     """ register that can read from bus """
     def __init__(self,
                  signals: Signals,
-                 bus: Bus,
+                 bus: ValueInterface,
                  my_load_signal: str):
         super().__init__(signals, bus, my_load_signal, "x")
 
@@ -56,7 +57,7 @@ class RegisterOut(Register):
     """ register that can write to bus """
     def __init__(self,
                  signals: Signals,
-                 bus: Bus,
+                 bus: ValueInterface,
                  my_enable_signal: str):
         super().__init__(signals, bus, "x", my_enable_signal)
 

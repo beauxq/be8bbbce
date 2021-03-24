@@ -1,9 +1,9 @@
 from math import log2
 from collections import defaultdict
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Dict
 import pygame
 from computer import Computer
-from components.register import Register
+from components.valueif import ValueInterface
 from visualcomponents.ramreader import RamReader
 from visualcomponents.irreader import IRReader
 from visualcomponents.signalwatcher import SignalWatcher
@@ -38,7 +38,7 @@ class VisualMain:
         # I want the speed keys to repeat
         pygame.key.set_repeat(500, 30)
         # but not other keys
-        self.keys_pressed = defaultdict(lambda: False)
+        self.keys_pressed: Dict[int, bool] = defaultdict(lambda: False)
 
         self.load_dimensions()
 
@@ -172,7 +172,7 @@ class VisualMain:
             text_rect = text.get_rect()
             x = self.screen.get_width() * .2
             y = self.screen.get_height() * .64
-            text_rect.center = (x, y)
+            text_rect.center = (x, y)  # type: ignore
             self.screen.blit(text, text_rect)
 
         self.i_r_reader.instruction_part = False
@@ -211,38 +211,38 @@ class VisualMain:
         # pause
         text = self.button_font.render('P', True, (10, 0, 120))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 3.5), y + (size / 2))
+        text_rect.center = (x + (size * 3.5), y + (size / 2))  # type: ignore
         self.screen.blit(text, text_rect)
         # clock tick
         text = self.button_font.render("C", True, (0, 150, 0))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 2.5), y + (size / 2))
+        text_rect.center = (x + (size * 2.5), y + (size / 2))  # type: ignore
         self.screen.blit(text, text_rect)
         # speed up
-        color = int(252 * self.clock_hz_exponent / MAX_CLOCK_HZ_EXPONENT)
-        text = self.button_font.render("]", True, (color, color, 140))
+        color_val = int(252 * self.clock_hz_exponent / MAX_CLOCK_HZ_EXPONENT)
+        text = self.button_font.render("]", True, (color_val, color_val, 140))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 1.5), y + (size / 2))
+        text_rect.center = (x + (size * 1.5), y + (size / 2))  # type: ignore
         self.screen.blit(text, text_rect)
         # slow down
-        text = self.button_font.render("[", True, (color, color, 120))
+        text = self.button_font.render("[", True, (color_val, color_val, 120))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 0.5), y + (size / 2))
+        text_rect.center = (x + (size * 0.5), y + (size / 2))  # type: ignore
         self.screen.blit(text, text_rect)
         # clock hz
         text = self.button_font.render(str(self.get_clock_hz()) + " hz",
                                        True, (0, 0, 0))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 1.5), y - (size / 2))
+        text_rect.center = (x + (size * 1.5), y - (size / 2))  # type: ignore
         self.screen.blit(text, text_rect)
         # pause message (for someone unfamiliar with controls)
         if self.pause_message_timer > 0:
             progress = ((-self.pause_message_timer) / self.pause_message_time) + 1
             brightness = 4 * (progress - (progress ** 0.5)) + 1  # inverted brightness, because it's black
             text = self.button_font.render("PAUSED - press P to toggle pause",
-                                           True, tuple(brightness * _ for _ in self.background_color))
+                                           True, tuple(brightness * v for v in self.background_color))  # type: ignore
             text_rect = text.get_rect()
-            text_rect.topleft = (x + (size * 3.4), y + (size))
+            text_rect.topleft = (x + (size * 3.4), y + (size))  # type: ignore
             self.screen.blit(text, text_rect)
 
         # reset button
@@ -253,7 +253,7 @@ class VisualMain:
         # r
         text = self.button_font.render('R', True, (80, 80, 0))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 0.5), y + (size * 0.5))
+        text_rect.center = (x + (size * 0.5), y + (size * 0.5))  # type: ignore
         self.screen.blit(text, text_rect)
 
         # 2's complement output button
@@ -264,7 +264,7 @@ class VisualMain:
         # 2
         text = self.button_font.render("2", True, (80, 200, 40))
         text_rect = text.get_rect()
-        text_rect.center = (x + (size * 0.5), y + (size * 0.5))
+        text_rect.center = (x + (size * 0.5), y + (size * 0.5))  # type: ignore
         self.screen.blit(text, text_rect)
 
         # output
@@ -279,15 +279,15 @@ class VisualMain:
             if self.twos else self.computer.out.value
         text = self.output_font.render(str(value), True, (250, 20, 20))
         text_rect = text.get_rect()
-        text_rect.center = (x + (width * 0.5), y + (height * 0.5))
+        text_rect.center = (x + (width * 0.5), y + (height * 0.5))  # type: ignore
         self.screen.blit(text, text_rect)
 
     def draw_value(self,
-                   component: Register,
+                   component: ValueInterface,
                    bit_count: int,
                    x_portion: float,
                    y_portion: float,
-                   led_color: Tuple[float],
+                   led_color: Tuple[Union[float, int], Union[float, int], Union[float, int]],
                    label_text: Union[str, List[str]],
                    vertical_label_height=0):
         """
@@ -317,7 +317,7 @@ class VisualMain:
             color = tuple((c * brightness for c in led_color))
             circle_x = x + width - (bit_size * bit + radius)
             pygame.draw.circle(self.screen,
-                               color,
+                               color,  # type: ignore
                                (int(circle_x), int(circle_y)),
                                int(radius))
             if vertical_label_height:
@@ -328,15 +328,15 @@ class VisualMain:
                     text = self.vertical_label_font.render(letter, True,
                                                            (16, 16, 16))
                     text_rect = text.get_rect()
-                    text_rect.center = (circle_x, label_y)
+                    text_rect.center = (circle_x, label_y)  # type: ignore
                     self.screen.blit(text, text_rect)
             value >>= 1
         if (not vertical_label_height) and label_text:
-            text = self.label_font.render(label_text, True,
+            text = self.label_font.render(label_text, True,  # type: ignore
                                           (16, 16, 16), (240, 240, 240))
             text_rect = text.get_rect()
             x_text = x + (width / 2)
             if isinstance(component, IRReader):
                 x_text = x + (width / 3)
-            text_rect.center = (x_text, y + (bit_size * 1.6) + 2)
+            text_rect.center = (x_text, y + (bit_size * 1.6) + 2)  # type: ignore
             self.screen.blit(text, text_rect)

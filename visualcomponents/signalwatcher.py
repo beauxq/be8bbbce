@@ -1,5 +1,6 @@
 from components.receiver import Receiver
 from components.signals import Signals
+from components.valueif import ValueInterface
 
 signal_to_bit = {
     Signals.HALT: 1 << 15,
@@ -21,8 +22,11 @@ signal_to_bit = {
 }
 
 
-class SignalWatcher(Receiver):
+class SignalWatcher(ValueInterface, Receiver):
     def __init__(self, signals: Signals):
+        # not calling super().__init__ because value defined by getter
+        # I can't find a good solution to this.
+        # https://stackoverflow.com/questions/56493495/how-to-write-interface-contract-for-object-property-attribute-existence-in-p#
         signals.listen(self)
         self.value = 0
 

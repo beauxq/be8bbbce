@@ -1,10 +1,12 @@
 from time import sleep
 from components.receiver import Receiver
 from components.signals import Signals
+from components.valueif import ValueInterface
 
 
-class Clock(Receiver):
+class Clock(ValueInterface, Receiver):
     def __init__(self, signals: Signals):
+        super().__init__()
         self.value = 0
         self.signals = signals
         self.signals.listen(self)  # clock listening to halt signal

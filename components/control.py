@@ -2,10 +2,11 @@ from components.receiver import Receiver
 from components.signals import Signals
 from components.instructionregister import InstructionRegister
 from components.flags import Flags
+from components.valueif import ValueInterface
 from asm import ASM, MICROCODE
 
 
-class Control(Receiver):
+class Control(ValueInterface, Receiver):
     OUT_SIGNALS = {  # all the signals that put something on the bus
         Signals.RAM_OUT,
         Signals.INSTR_OUT,
@@ -23,6 +24,7 @@ class Control(Receiver):
                  signals: Signals,
                  ir: InstructionRegister,
                  flags: Flags):
+        super().__init__()
         self.signals = signals
         self.signals.listen(self)
         self.ir = ir
