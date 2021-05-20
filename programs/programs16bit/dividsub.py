@@ -37,13 +37,13 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 2255),
         a.m(ASM.JMP, 2213),
         a.m(ASM.LDA, 2254),  # address 2224
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 2255),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 2231),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 2231
+        a.m(ASM.LDA, 2083),  # address 2231
         a.m(ASM.STA, 2253),
         a.m(ASM.JI , 2252)
     ]

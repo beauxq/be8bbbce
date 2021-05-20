@@ -15,13 +15,13 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 1130),
         # op1 v4,v5,v6 = v2 * v3
         a.m(ASM.LDA, 1020),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1030),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 14),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 14
+        a.m(ASM.LDA, 2083),  # address 14
         a.m(ASM.STA, 1040),
         a.m(ASM.STA, 1050),
         a.m(ASM.STA, 1060),
@@ -39,13 +39,13 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 1110),
         # op5 v11 = v11 / v2 -> v11d = multiply(v11d, v2i)
         a.m(ASM.LDA, 1111),
-        a.m(ASM.STA, 2034),  # better when a is lower number
+        a.m(ASM.STA, 2081),  # better when a is lower number
         a.m(ASM.LDA, 1020),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDI, 34),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 34
+        a.m(ASM.LDA, 2083),  # address 34
         a.m(ASM.STA, 1111),
         # op6 v13 = v13 - v11
         # v13n = v13n - v11n; v13d = v11d
@@ -79,22 +79,22 @@ def p(computer: Computer, a: Assembler):
         # v12n = multiply(v20n[1], v11n)
         # v12d = multiply(v20d[1], v11d)
         a.m(ASM.LDA, 1210),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1110),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 64),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 64
+        a.m(ASM.LDA, 2083),  # address 64
         a.m(ASM.STA, 1120),
         a.m(ASM.LDA, 1211),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1111),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 73),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 73
+        a.m(ASM.LDA, 2083),  # address 73
         a.m(ASM.STA, 1121),
         # op11 v13 = v12 + v13
         # v13n, v13d = add_f(v12n, v12d, v13n, v13d)
@@ -152,22 +152,22 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.LDA, 2450),
         a.m(ASM.STA, 1080),
         # op16 v11 = v8 * v11  ~  mult n; mult d; then reduce
-        a.m(ASM.STA, 2033),  # v8n already in reg A
+        a.m(ASM.STA, 2080),  # v8n already in reg A
         a.m(ASM.LDA, 1110),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 123),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 123 - numer to be reduced
+        a.m(ASM.LDA, 2083),  # address 123 - numer to be reduced
         a.m(ASM.STA, 2450),  # leave that there for a bit
         a.m(ASM.LDA, 1081),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1111),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 132),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 132 - denom
+        a.m(ASM.LDA, 2083),  # address 132 - denom
         a.m(ASM.STA, 2451),  # to be reduced
         a.m(ASM.LDI, 137),
         a.m(ASM.STA, 2452),
@@ -197,22 +197,22 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 1090),
         # op20 v11 = v9 * v11
         # mult n; mult d; then reduce ~ copy paste from op16
-        a.m(ASM.STA, 2033),  # v9n already in reg A
+        a.m(ASM.STA, 2080),  # v9n already in reg A
         a.m(ASM.LDA, 1110),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 163),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 163 - numer to be reduced
+        a.m(ASM.LDA, 2083),  # address 163 - numer to be reduced
         a.m(ASM.STA, 2450),  # leave that there for a bit
         a.m(ASM.LDA, 1091),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1111),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 172),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 172 - denom
+        a.m(ASM.LDA, 2083),  # address 172 - denom
         a.m(ASM.STA, 2451),  # to be reduced
         a.m(ASM.LDI, 177),
         a.m(ASM.STA, 2452),
@@ -227,34 +227,34 @@ def p(computer: Computer, a: Assembler):
         # about to make address for v20n[v3i - v10i]
         a.m(ASM.LDA, 1030),  # v3i
         a.m(ASM.SUB, 1100),  # - v10i
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDI, 10),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 190),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
         a.m(ASM.LDI, 1200),  # address 190
-        a.m(ASM.ADD, 2036),  # 1200 + (v3i - v10i) * 10
+        a.m(ASM.ADD, 2083),  # 1200 + (v3i - v10i) * 10
         a.m(ASM.STA, 900),  # address of v20n[v3i - v10i]
         a.m(ASM.ADD, 1010),
         a.m(ASM.STA, 901),  # address of v20d[v3i - v10i]
         a.m(ASM.LIN, 900),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1110),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 202),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 202 - numer to be reduced
+        a.m(ASM.LDA, 2083),  # address 202 - numer to be reduced
         a.m(ASM.STA, 2450),  # leave that there for a bit
         a.m(ASM.LIN, 901),
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDA, 1111),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 211),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
-        a.m(ASM.LDA, 2036),  # address 211 - denom to be reduced
+        a.m(ASM.LDA, 2083),  # address 211 - denom to be reduced
         a.m(ASM.STA, 2451),
         a.m(ASM.LDI, 216),
         a.m(ASM.STA, 2452),
@@ -293,14 +293,14 @@ def p(computer: Computer, a: Assembler):
         # op24 v20[v3i] = v20[v3i] - v13
         # v20n[v3i] = v20n[v3i] - v13n; v20d[v3i] = v13d
         a.m(ASM.LDA, 1030),  # address 245
-        a.m(ASM.STA, 2033),
+        a.m(ASM.STA, 2080),
         a.m(ASM.LDI, 10),
-        a.m(ASM.STA, 2034),
+        a.m(ASM.STA, 2081),
         a.m(ASM.LDI, 252),
-        a.m(ASM.STA, 2035),
+        a.m(ASM.STA, 2082),
         a.m(ASM.JMP, 2000),
         a.m(ASM.LDI, 1200),  # address 252
-        a.m(ASM.ADD, 2036),
+        a.m(ASM.ADD, 2083),
         a.m(ASM.STA, 900),  # v20n[v3i]
         a.m(ASM.ADD, 1010),
         a.m(ASM.STA, 901),  # v20d[v3i]
