@@ -30,7 +30,7 @@ class Clock(ValueInterface, Receiver):
             self.value = 0
             self.signals.signal(Signals.CLOCK, self.value)
 
-    def go(self, cycles=8999999999999999999, delay_seconds=0):
+    def go(self, cycles: int=8999999999999999999, delay_seconds: float=0.0):
         """ run clock the given number of cycles or until halt signal """
         delay_seconds /= 2
         while (cycles > 0) and (not self.halted):
