@@ -4,6 +4,27 @@ from components.register import RegisterInOut
 from components.alu import ALU
 
 
+def test_twos_complement() -> None:
+    signals = Signals()
+    bus = Bus()
+    reg_a = RegisterInOut(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
+    reg_b = RegisterInOut(signals, bus, Signals.REG_B_IN, Signals.REG_B_OUT)
+    alu = ALU(signals, bus, reg_a, reg_b, 8)
+
+    assert alu.twos_complement_negation(0) == 0
+    assert alu.twos_complement_negation(1) == 255
+    assert alu.twos_complement_negation(255) == 1
+    assert alu.twos_complement_negation(2) == 254
+    assert alu.twos_complement_negation(254) == 2
+    for i in range(3, 254):
+        assert alu.twos_complement_negation(i) == 256 - i
+    
+    assert alu.twos_complement_negation(0b00101100) == 0b11010100
+    assert alu.twos_complement_negation(0b10011111) == 0b01100001
+    assert alu.twos_complement_negation(0b00100101) == 0b11011011
+    assert alu.twos_complement_negation(0b10011000) == 0b01101000
+
+
 def test() -> None:
     signals = Signals()
     bus = Bus()

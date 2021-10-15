@@ -21,8 +21,7 @@ class ALU(RegisterOut):
 
     def twos_complement_negation(self, x: int):
         assert 0 <= x < self.max_plus_one
-        x -= self.max_plus_one
-        return 0 - x
+        return (self.max_plus_one - x) % self.max_plus_one
 
     def add(self) -> None:
         # Register a and register b are unsigned integers.
