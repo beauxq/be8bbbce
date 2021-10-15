@@ -19,12 +19,12 @@ class ALU(RegisterOut):
         self.subtract = 0
         self.enabled = 0  # output to bus
 
-    def twos_complement_negation(self, x):
+    def twos_complement_negation(self, x: int):
         assert 0 <= x < self.max_plus_one
         x -= self.max_plus_one
         return 0 - x
 
-    def add(self):
+    def add(self) -> None:
         # Register a and register b are unsigned integers.
         # The computer uses 2's complement to subtract, but only to subtract.
         # Nothing is ever interpreted in 2's complement.
