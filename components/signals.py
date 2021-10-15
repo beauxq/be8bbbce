@@ -39,9 +39,15 @@ class Signals:
         self.receivers: List[Receiver] = []
 
     def signal(self, code: str, value: int):
+        """
+        send signal to all receivers
+        """
         # print("signal:", code, " value:", value)
         for receiver in self.receivers:
             receiver.receive_signal(code, value)
 
     def listen(self, receiver: Receiver):
+        """
+        make it so this receiver receives signals
+        """
         self.receivers.append(receiver)
