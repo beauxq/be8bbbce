@@ -4,7 +4,7 @@ from components.register import RegisterInOut
 from components.alu import ALU
 
 
-def test():
+def test() -> None:
     signals = Signals()
     bus = Bus()
     reg_a = RegisterInOut(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
