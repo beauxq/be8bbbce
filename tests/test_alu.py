@@ -41,6 +41,14 @@ def test() -> None:
     assert alu.value == 246  # -10
     assert alu.carry == 0
 
+    reg_a.value = 10
+    reg_b.value = 20
+    signals.signal(Signals.SUBTRACT, 1)
+    signals.signal(Signals.CLOCK, 1)
+    signals.signal(Signals.CLOCK, 0)
+    assert alu.value == 246  # -10
+    assert alu.carry == 0
+
     reg_a.value = 246  # -10
     reg_b.value = 20
     alu.subtract = 0
@@ -68,6 +76,14 @@ def test() -> None:
     reg_a.value = 246  # -10
     reg_b.value = 236  # -20
     alu.subtract = 1
+    signals.signal(Signals.CLOCK, 1)
+    signals.signal(Signals.CLOCK, 0)
+    assert alu.value == 10
+    assert alu.carry == 1
+
+    reg_a.value = 246  # -10
+    reg_b.value = 236  # -20
+    signals.signal(Signals.SUBTRACT, 1)
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     assert alu.value == 10
