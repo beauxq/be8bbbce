@@ -9,7 +9,7 @@ class Output(RegisterIn):
         # self.bit_count = bit_count
         self.max_plus_one = 1 << bit_count
 
-    def unsigned_to_signed(self, x):
+    def unsigned_to_signed(self, x: int):
         half_max = self.max_plus_one // 2
         assert 0 <= x < self.max_plus_one
         if x >= half_max:

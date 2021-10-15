@@ -1,6 +1,7 @@
 from enum import IntEnum
 from collections import defaultdict
 from components.signals import Signals
+from typing import Dict
 
 
 class ASM(IntEnum):
@@ -22,7 +23,7 @@ class ASM(IntEnum):
 
 
 # machine code to assembly
-ASM_R = defaultdict(lambda: "NOP", {
+ASM_R: Dict[int, str] = defaultdict(lambda: "NOP", {
     ASM.NOP: "NOP",
     ASM.LDA: "LDA",
     ASM.ADD: "ADD",

@@ -14,7 +14,7 @@ INSTRUCTION_LENGTH = 4
 
 
 class Computer():
-    def __init__(self, address_length: int, clean_memory=False):
+    def __init__(self, address_length: int, clean_memory: bool=False):
         self.address_length = address_length
         self.instruction_length = INSTRUCTION_LENGTH
         # One word can contain an instruction and an address.

@@ -289,7 +289,7 @@ class VisualMain:
                    y_portion: float,
                    led_color: Tuple[Union[float, int], Union[float, int], Union[float, int]],
                    label_text: Union[str, List[str]],
-                   vertical_label_height=0):
+                   vertical_label_height: float=0):
         """
         component is anything with value attribute - duck typing
         bit_count is number of LEDs to show
