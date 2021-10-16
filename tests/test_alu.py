@@ -25,7 +25,7 @@ def test_twos_complement() -> None:
     assert alu.twos_complement_negation(0b10011000) == 0b01101000
 
 
-def test() -> None:
+def test_arithmetic() -> None:
     signals = Signals()
     bus = Bus()
     reg_a = RegisterInOut(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
@@ -33,162 +33,96 @@ def test() -> None:
     alu = ALU(signals, bus, reg_a, reg_b, 8)
     # TODO: test other bit lengths
 
-    reg_a.value = 6
-    reg_b.value = 2
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 8
-    assert alu.carry == 0
+    def arithmetic(a: int, b: int, result: int, carry: int, subtract: int):
+        # set subtract input directly
+        reg_a.value = a
+        reg_b.value = b
+        alu.subtract = subtract
+        signals.signal(Signals.CLOCK, 1)
+        signals.signal(Signals.CLOCK, 0)
+        assert alu.value == result
+        assert alu.carry == carry
 
-    reg_a.value = 125
-    reg_b.value = 5
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 130
-    assert alu.carry == 0
+        # send subtract signal
+        reg_a.value = a
+        reg_b.value = b
+        signals.signal(Signals.SUBTRACT, subtract)
+        signals.signal(Signals.CLOCK, 1)
+        signals.signal(Signals.CLOCK, 0)
+        assert alu.value == result
+        assert alu.carry == carry
 
-    reg_a.value = 250
-    reg_b.value = 10
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 4
-    assert alu.carry == 1
+    def add(a: int, b: int, result: int, carry: int):
+        arithmetic(a, b, result, carry, 0)
+    
+    def subtract(a: int, b: int, result: int, carry: int):
+        arithmetic(a, b, result, carry, 1)
 
-    reg_a.value = 10
-    reg_b.value = 20
-    alu.subtract = 1
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 246  # -10
-    assert alu.carry == 0
+    add(6, 2, 8, 0)
 
-    reg_a.value = 10
-    reg_b.value = 20
-    signals.signal(Signals.SUBTRACT, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 246  # -10
-    assert alu.carry == 0
+    add(125, 5, 130, 0)
+    add(125, 5, alu.twos_complement_negation(126), 0)
 
-    reg_a.value = 246  # -10
-    reg_b.value = 20
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 10
-    assert alu.carry == 1
+    add(250, 10, 4, 1)
+    add(alu.twos_complement_negation(6), 10, 4, 1)
 
-    reg_a.value = 10
-    reg_b.value = 236  # -20
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 246  # -10
-    assert alu.carry == 0
+    subtract(10, 20, 246, 0)
+    subtract(10, 20, alu.twos_complement_negation(10), 0)
 
-    reg_a.value = 246  # -10
-    reg_b.value = 236  # -20
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 226  # -30
-    assert alu.carry == 1
+    add(246, 20, 10, 1)
+    add(alu.twos_complement_negation(10), 20, 10, 1)
 
-    reg_a.value = 246  # -10
-    reg_b.value = 236  # -20
-    alu.subtract = 1
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 10
-    assert alu.carry == 1
+    add(10, 236, 246, 0)
+    add(10, alu.twos_complement_negation(20), alu.twos_complement_negation(10), 0)
 
-    reg_a.value = 246  # -10
-    reg_b.value = 236  # -20
-    signals.signal(Signals.SUBTRACT, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 10
-    assert alu.carry == 1
+    add(246, 236, 226, 1)
+    add(alu.twos_complement_negation(10),
+        alu.twos_complement_negation(20),
+        alu.twos_complement_negation(30),
+        1)
+
+    subtract(246, 236, 10, 1)
+    subtract(alu.twos_complement_negation(10),
+             alu.twos_complement_negation(20),
+             10,
+             1)
 
     # below are the test cases Ben Eater spent time with in his videos
 
-    reg_a.value = 0
-    reg_b.value = 8
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 8
-    assert alu.carry == 0
+    add(0, 8, 8, 0)
+    
+    subtract(0, 8, 8+16+32+64+128, 0)
+    subtract(0, 8, alu.twos_complement_negation(8), 0)
 
-    reg_a.value = 0
-    reg_b.value = 8
-    alu.subtract = 1
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 8+16+32+64+128
-    assert alu.carry == 0
+    add(64, 0, 64, 0)
 
-    reg_a.value = 64
-    reg_b.value = 0
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 64
-    assert alu.carry == 0
+    add(0, 4, 4, 0)
 
-    reg_a.value = 0
-    reg_b.value = 4
-    alu.subtract = 0
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 4
-    assert alu.carry == 0
+    subtract(6, 2, 4, 1)
 
-    reg_a.value = 6
-    reg_b.value = 2
-    alu.subtract = 1
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    assert alu.value == 4
-    assert alu.carry == 1
-
-    # move value from alu to reg a to keep counting down by 2
-    signals.signal(Signals.ALU_OUT, 1)
-    signals.signal(Signals.REG_A_IN, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    signals.signal(Signals.ALU_OUT, 0)
-    signals.signal(Signals.REG_A_IN, 0)
+    def alu_to_a() -> None:
+        """
+        move value from alu to reg a to keep counting down by 2
+        """
+        signals.signal(Signals.ALU_OUT, 1)
+        signals.signal(Signals.REG_A_IN, 1)
+        signals.signal(Signals.CLOCK, 1)
+        signals.signal(Signals.CLOCK, 0)
+        signals.signal(Signals.ALU_OUT, 0)
+        signals.signal(Signals.REG_A_IN, 0)
+    
+    alu_to_a()
     assert alu.value == 2
     assert alu.carry == 1
 
-    signals.signal(Signals.ALU_OUT, 1)
-    signals.signal(Signals.REG_A_IN, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    signals.signal(Signals.ALU_OUT, 0)
-    signals.signal(Signals.REG_A_IN, 0)
+    alu_to_a()
     assert alu.value == 0
     assert alu.carry == 1
 
-    signals.signal(Signals.ALU_OUT, 1)
-    signals.signal(Signals.REG_A_IN, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    signals.signal(Signals.ALU_OUT, 0)
-    signals.signal(Signals.REG_A_IN, 0)
+    alu_to_a()
     assert alu.value == 254
     assert alu.carry == 0
 
-    signals.signal(Signals.ALU_OUT, 1)
-    signals.signal(Signals.REG_A_IN, 1)
-    signals.signal(Signals.CLOCK, 1)
-    signals.signal(Signals.CLOCK, 0)
-    signals.signal(Signals.ALU_OUT, 0)
-    signals.signal(Signals.REG_A_IN, 0)
+    alu_to_a()
     assert alu.value == 252
     assert alu.carry == 1
-
-
-if __name__ == "__main__":
-    test()
