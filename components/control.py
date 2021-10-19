@@ -47,7 +47,9 @@ class Control(ValueInterface, Receiver):
         return MICROCODE[instruction][self.value - 2]
 
     def turn_off_current_signals(self) -> None:
+        # print("signals to turn off:", self.microcode())
         for signal in self.microcode():
+            # print("turning off signal: " + signal)
             self.signals.signal(signal, 0)
 
     def execute(self) -> None:
@@ -86,7 +88,8 @@ class Control(ValueInterface, Receiver):
                 self.execute()
 
     def reset(self) -> None:
-        self.signals.signal(Signals.RESET, 1)
+        print("control reset")
         self.turn_off_current_signals()
+        self.signals.signal(Signals.RESET, 1)
         self.value = 4  # last step
         self.execute()
