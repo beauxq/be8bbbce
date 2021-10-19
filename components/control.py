@@ -4,6 +4,7 @@ from components.instructionregister import InstructionRegister
 from components.flags import Flags
 from components.valueif import ValueInterface
 from asm import ASM, MICROCODE
+from typing import Tuple
 
 
 class Control(ValueInterface, Receiver):
@@ -31,7 +32,7 @@ class Control(ValueInterface, Receiver):
         self.flags = flags
         self.value = 0  # microcode step
 
-    def microcode(self):
+    def microcode(self) -> Tuple[str, ...]:
         if self.value < 2:
             return Control.FETCH[self.value]
 
@@ -45,11 +46,11 @@ class Control(ValueInterface, Receiver):
 
         return MICROCODE[instruction][self.value - 2]
 
-    def turn_off_current_signals(self):
+    def turn_off_current_signals(self) -> None:
         for signal in self.microcode():
             self.signals.signal(signal, 0)
 
-    def execute(self):
+    def execute(self) -> None:
         # turn off last control word
         self.turn_off_current_signals()
 
@@ -84,7 +85,7 @@ class Control(ValueInterface, Receiver):
                 # low clock
                 self.execute()
 
-    def reset(self):
+    def reset(self) -> None:
         self.signals.signal(Signals.RESET, 1)
         self.turn_off_current_signals()
         self.value = 4  # last step

@@ -1,7 +1,7 @@
 from enum import IntEnum
 from collections import defaultdict
 from components.signals import Signals
-from typing import Dict
+from typing import Dict, Tuple
 
 
 class ASM(IntEnum):
@@ -41,7 +41,7 @@ ASM_R: Dict[int, str] = defaultdict(lambda: "NOP", {
 })
 
 
-MICROCODE = {
+MICROCODE: Dict[int, Tuple[Tuple[str, ...], Tuple[str, ...], Tuple[str, ...]]] = {
     ASM.NOP: ((), (), ()),
     # no operation
 
