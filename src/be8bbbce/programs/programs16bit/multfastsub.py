@@ -16,7 +16,7 @@ def p(computer: Computer, a: Assembler):
     multiply_subroutine = [
         a.m(ASM.LDA, 2080),
         a.m(ASM.ADD, 4000),
-        a.m(ASM.JC,  2004),
+        a.m(ASM.JC , 2004),
         a.m(ASM.JMP, 2010),
         a.m(ASM.LDI, 0),
         a.m(ASM.SUB, 2080),
@@ -28,7 +28,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 2083),
         a.m(ASM.LDI, 0),
         a.m(ASM.ADD, 2080),
-        a.m(ASM.JZ,  2076),
+        a.m(ASM.JZ , 2076),
         a.m(ASM.LDI, 1),
         a.m(ASM.STA, 2086),
         a.m(ASM.STA, 2088),
@@ -39,7 +39,7 @@ def p(computer: Computer, a: Assembler):
         a.m(ASM.STA, 2089),
         a.m(ASM.LDA, 2080),
         a.m(ASM.SUB, 2089),
-        a.m(ASM.JC,  2027),
+        a.m(ASM.JC , 2027),
         a.m(ASM.JMP, 2045),
         a.m(ASM.LDA, 2083),
         a.m(ASM.ADD, 2083),
@@ -106,7 +106,7 @@ def p(computer: Computer, a: Assembler):
     2089 double
     2090 2 const
 
-    400 powers 
+    400 powers
     500-564 addition counts
     """
 

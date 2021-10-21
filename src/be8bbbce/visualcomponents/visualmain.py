@@ -46,8 +46,8 @@ class VisualMain:
         # print("setting font size", int(self.led_size + 1)
         # print("width", self.screen.get_width())
         self.led_size = (min(self.screen.get_width(),
-                             self.screen.get_height()) /
-                         ((self.computer.bit_count * 2.5) + 12))
+                             self.screen.get_height())
+                         / ((self.computer.bit_count * 2.5) + 12))
         # control size multiplier
         self.mult = .25 * log2(self.computer.bit_count) + .25
         self.button_font = pygame.font.Font('freesansbold.ttf',
@@ -66,7 +66,7 @@ class VisualMain:
 
     def get_clock_hz(self):
         return round(0.25 * (2 ** (self.clock_hz_exponent * 0.5)), 2)
-    
+
     def update_pause_message_timer(self):
         self.pause_message_timer = max(self.pause_message_timer - 1000 // self.fps, 0)
 
@@ -321,7 +321,7 @@ class VisualMain:
                                (int(circle_x), int(circle_y)),
                                int(radius))
             if vertical_label_height:
-                this_label = label_text[-(1+bit)]
+                this_label = label_text[-(1 + bit)]
                 label_y = circle_y
                 for letter in this_label:
                     label_y += bit_size
