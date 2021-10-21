@@ -2,6 +2,10 @@
 ### (be8bbbce)
 --------------
 
+![Tests](https://github.com/beauxq/be8bbbce/actions/workflows/tests.yml/badge.svg)
+
+---
+
 Ben Eater has a Youtube playlist building an 8-bit computer from scratch on breadboards.
 
 https://www.youtube.com/watch?v=HyznrdDSSGM&list=PLowKtXNTBypGqImE405J2565dvjafglHU
