@@ -18,11 +18,11 @@ def test_programcounter() -> None:
         signals.signal(Signals.CLOCK, 1)
         signals.signal(Signals.CLOCK, 0)
         signals.signal(signal, 0)
-    
+
     signal_with_clock(Signals.COUNTER_INCREMENT)
 
     assert pc.value == 1
-    
+
     signal_with_clock(Signals.COUNTER_INCREMENT)
 
     assert pc.value == 2
@@ -36,11 +36,11 @@ def test_programcounter() -> None:
     signal_with_clock(Signals.COUNTER_IN)
 
     assert pc.value == 14
-    
+
     signal_with_clock(Signals.COUNTER_INCREMENT)
 
     assert pc.value == 15
-    
+
     signal_with_clock(Signals.COUNTER_INCREMENT)
 
     assert pc.value == 0

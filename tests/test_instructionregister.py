@@ -13,7 +13,7 @@ def test_instructionregister() -> None:
     signals.signal(Signals.CLOCK, 1)
     signals.signal(Signals.CLOCK, 0)
     signals.signal(Signals.INSTR_IN, 0)
-    
+
     assert ir.value == (14 << ir.address_length) | 5
 
     signals.signal(Signals.INSTR_OUT, 1)

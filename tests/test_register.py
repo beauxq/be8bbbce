@@ -3,8 +3,10 @@ from be8bbbce.components.signals import Signals
 from be8bbbce.components.bus import Bus
 from be8bbbce.components.valueif import ValueInterface
 
+
 LOAD = "LOAD"  # in
 ENABLE = "ENABLE"  # out
+
 
 def make_sure_load_works(reg: Register, bus: ValueInterface):
     bus.value = 42
@@ -13,6 +15,7 @@ def make_sure_load_works(reg: Register, bus: ValueInterface):
     reg.receive_signal(Signals.CLOCK, 0)
 
     assert reg.value == 42
+
 
 def make_sure_load_does_not_work(reg: Register, bus: ValueInterface):
     bus.value = 42
@@ -34,6 +37,7 @@ def make_sure_enable_works(reg: Register, bus: ValueInterface):
 
     assert bus.value == 21
 
+
 def make_sure_enable_does_not_work(reg: Register, bus: ValueInterface):
     reg.value = 21
     previous = bus.value
@@ -45,6 +49,7 @@ def make_sure_enable_does_not_work(reg: Register, bus: ValueInterface):
     # Register that is not RegisterOut should not put value on bus
     assert bus.value == previous
 
+
 def test_Register() -> None:
     signals = Signals()
     bus = Bus()
@@ -52,6 +57,7 @@ def test_Register() -> None:
 
     make_sure_load_does_not_work(reg, bus)
     make_sure_enable_does_not_work(reg, bus)
+
 
 def test_RegisterIn() -> None:
     signals = Signals()
@@ -61,6 +67,7 @@ def test_RegisterIn() -> None:
     make_sure_load_works(reg, bus)
     make_sure_enable_does_not_work(reg, bus)
 
+
 def test_RegisterOut() -> None:
     signals = Signals()
     bus = Bus()
@@ -69,6 +76,7 @@ def test_RegisterOut() -> None:
     make_sure_load_does_not_work(reg, bus)
     make_sure_enable_works(reg, bus)
 
+
 def test_RegisterInOut() -> None:
     signals = Signals()
     bus = Bus()
@@ -76,6 +84,7 @@ def test_RegisterInOut() -> None:
 
     make_sure_load_works(reg, bus)
     make_sure_enable_works(reg, bus)
+
 
 def test_register_reset() -> None:
     signals = Signals()

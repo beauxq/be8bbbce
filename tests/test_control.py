@@ -7,7 +7,6 @@ from be8bbbce.components.receiver import Receiver
 from be8bbbce.components.register import RegisterIn
 from be8bbbce.components.signals import Signals
 from be8bbbce.components.instructionregister import InstructionRegister
-from be8bbbce.components.bus import Bus
 from be8bbbce.components.flags import Flags
 import pytest
 
@@ -136,7 +135,7 @@ def test_execute(control: Control) -> None:
     assert control.value == 3
     assert rec.high_counter[Signals.REG_A_OUT] == 1
     assert rec.high_counter[Signals.RAM_IN] == 1
-    
+
     control.execute()
     assert control.value == 4
     control.execute()

@@ -4,6 +4,7 @@ from be8bbbce.components.flags import Flags
 from be8bbbce.components.register import Register
 from be8bbbce.components.signals import Signals
 
+
 def test_flags() -> None:
     signals = Signals()
     bus = Bus()
@@ -17,7 +18,7 @@ def test_flags() -> None:
         flags.receive_signal(Signals.FLAGS_IN, 1)
         flags.receive_signal(Signals.CLOCK, 1)
         flags.receive_signal(Signals.CLOCK, 0)
-        
+
         assert flags.get_carry() == expected_c
         assert flags.get_zero() == expected_z
 

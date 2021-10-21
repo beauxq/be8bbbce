@@ -12,7 +12,7 @@ It is a "simple-as-possible" architecture.
 
 Run main.py (text) or visual.py (gui).
 
-The gui uses the pygame python package that must be installed.  
+The gui uses the pygame python package.  
 Note this bug with resizing the window in pygame: https://github.com/pygame/pygame/issues/201  
 Don't resize the window from the corner. Use the sides.
 

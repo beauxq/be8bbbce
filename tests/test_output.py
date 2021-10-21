@@ -13,6 +13,7 @@ def test_u2s() -> None:
         assert out.unsigned_to_signed(i) == i
         assert out.unsigned_to_signed(i + 128) == i - 128
 
+
 def test_output(capsys: _pytest.capture.CaptureFixture[str]) -> None:
     signals = Signals()
     bus = Bus()
@@ -37,4 +38,3 @@ def test_output(capsys: _pytest.capture.CaptureFixture[str]) -> None:
     assert "130" in printed.out
     # two's complement
     assert "-126" in printed.out
-    

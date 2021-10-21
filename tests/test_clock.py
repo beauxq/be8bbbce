@@ -8,7 +8,7 @@ class ClockReceiver(Receiver):
         super().__init__()
         self.high_counter = 0
         self.low_counter = 0
-    
+
     def receive_signal(self, code: str, value: int):
         if code == Signals.CLOCK:
             if value == 1:
@@ -20,7 +20,7 @@ class ClockReceiver(Receiver):
 def test_clock_states() -> None:
     signals = Signals()
     clock = Clock(signals)
-    
+
     assert clock.value == 0
 
     clock.go_high()

@@ -18,7 +18,7 @@ def test_twos_complement() -> None:
     assert alu.twos_complement_negation(254) == 2
     for i in range(3, 254):
         assert alu.twos_complement_negation(i) == 256 - i
-    
+
     assert alu.twos_complement_negation(0b00101100) == 0b11010100
     assert alu.twos_complement_negation(0b10011111) == 0b01100001
     assert alu.twos_complement_negation(0b00100101) == 0b11011011
@@ -54,7 +54,7 @@ def test_arithmetic() -> None:
 
     def add(a: int, b: int, result: int, carry: int):
         arithmetic(a, b, result, carry, 0)
-    
+
     def subtract(a: int, b: int, result: int, carry: int):
         arithmetic(a, b, result, carry, 1)
 
@@ -90,8 +90,8 @@ def test_arithmetic() -> None:
     # below are the test cases Ben Eater spent time with in his videos
 
     add(0, 8, 8, 0)
-    
-    subtract(0, 8, 8+16+32+64+128, 0)
+
+    subtract(0, 8, 8 + 16 + 32 + 64 + 128, 0)
     subtract(0, 8, alu.twos_complement_negation(8), 0)
 
     add(64, 0, 64, 0)
@@ -110,7 +110,7 @@ def test_arithmetic() -> None:
         signals.signal(Signals.CLOCK, 0)
         signals.signal(Signals.ALU_OUT, 0)
         signals.signal(Signals.REG_A_IN, 0)
-    
+
     alu_to_a()
     assert alu.value == 2
     assert alu.carry == 1
