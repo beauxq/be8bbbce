@@ -1,8 +1,8 @@
-from components.alu import ALU
-from components.bus import Bus
-from components.flags import Flags
-from components.register import Register
-from components.signals import Signals
+from be8bbbce.components.alu import ALU
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.flags import Flags
+from be8bbbce.components.register import Register
+from be8bbbce.components.signals import Signals
 
 def test_flags() -> None:
     signals = Signals()

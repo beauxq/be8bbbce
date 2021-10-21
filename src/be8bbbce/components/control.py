@@ -1,9 +1,9 @@
-from components.receiver import Receiver
-from components.signals import Signals
-from components.instructionregister import InstructionRegister
-from components.flags import Flags
-from components.valueif import ValueInterface
-from asm import ASM, MICROCODE
+from be8bbbce.components.receiver import Receiver
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.flags import Flags
+from be8bbbce.components.valueif import ValueInterface
+from be8bbbce.asm import ASM, MICROCODE
 from typing import Tuple
 
 

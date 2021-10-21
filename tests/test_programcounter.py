@@ -1,6 +1,6 @@
-from components.programcounter import ProgramCounter
-from components.signals import Signals
-from components.bus import Bus
+from be8bbbce.components.programcounter import ProgramCounter
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.bus import Bus
 
 
 def test_programcounter() -> None:

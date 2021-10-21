@@ -1,6 +1,6 @@
-from components.ram import Ram
-from components.signals import Signals
-from components.bus import Bus
+from be8bbbce.components.ram import Ram
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.bus import Bus
 
 
 def test_ram() -> None:

@@ -1,8 +1,8 @@
 from random import randrange
-from components.receiver import Receiver
-from components.register import RegisterIn
-from components.signals import Signals
-from components.bus import Bus
+from be8bbbce.components.receiver import Receiver
+from be8bbbce.components.register import RegisterIn
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.bus import Bus
 
 
 class _MemoryAddressRegister(RegisterIn):

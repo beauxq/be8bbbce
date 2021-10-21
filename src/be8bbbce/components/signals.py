@@ -1,5 +1,5 @@
 from typing import List
-from components.receiver import Receiver
+from be8bbbce.components.receiver import Receiver
 
 
 class Signals:

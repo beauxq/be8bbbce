@@ -1,7 +1,7 @@
 from time import sleep
-from components.receiver import Receiver
-from components.signals import Signals
-from components.valueif import ValueInterface
+from be8bbbce.components.receiver import Receiver
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.valueif import ValueInterface
 
 
 class Clock(ValueInterface, Receiver):

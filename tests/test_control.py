@@ -1,14 +1,14 @@
 from typing import Counter
-from components.alu import ALU
-from components.bus import Bus
-from components.control import Control
-from asm import ASM, MICROCODE
-from components.receiver import Receiver
-from components.register import RegisterIn
-from components.signals import Signals
-from components.instructionregister import InstructionRegister
-from components.bus import Bus
-from components.flags import Flags
+from be8bbbce.components.alu import ALU
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.control import Control
+from be8bbbce.asm import ASM, MICROCODE
+from be8bbbce.components.receiver import Receiver
+from be8bbbce.components.register import RegisterIn
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.flags import Flags
 import pytest
 
 

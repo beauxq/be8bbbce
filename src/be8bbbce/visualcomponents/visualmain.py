@@ -2,12 +2,12 @@ from math import log2
 from collections import defaultdict
 from typing import Tuple, List, Union, Dict
 import pygame
-from computer import Computer
-from components.valueif import ValueInterface
-from visualcomponents.ramreader import RamReader
-from visualcomponents.irreader import IRReader
-from visualcomponents.signalwatcher import SignalWatcher
-from asm import ASM_R
+from be8bbbce.computer import Computer
+from be8bbbce.components.valueif import ValueInterface
+from be8bbbce.visualcomponents.ramreader import RamReader
+from be8bbbce.visualcomponents.irreader import IRReader
+from be8bbbce.visualcomponents.signalwatcher import SignalWatcher
+from be8bbbce.asm import ASM_R
 
 DRAW_BOX_FOR_REGISTERS = False
 

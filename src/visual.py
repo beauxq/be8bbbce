@@ -1,9 +1,10 @@
 import pygame
 
-from visualcomponents.visualmain import VisualMain
-from computer import Computer
-from programs.programs8bit.p4 import p
-from asm import Assembler
+from be8bbbce.visualcomponents.visualmain import VisualMain
+from be8bbbce.computer import Computer
+# from be8bbbce.programs.programs8bit.sqrt import p
+from be8bbbce.programs.programs8bit.p2 import p
+from be8bbbce.asm import Assembler
 
 pygame.init()
 

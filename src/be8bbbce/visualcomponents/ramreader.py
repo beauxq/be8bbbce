@@ -1,5 +1,5 @@
-from components.ram import Ram
-from components.valueif import ValueInterface
+from be8bbbce.components.ram import Ram
+from be8bbbce.components.valueif import ValueInterface
 
 
 class RamReader(ValueInterface):

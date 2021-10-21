@@ -1,5 +1,5 @@
-from computer import Computer
-from asm import Assembler, ASM
+from be8bbbce.computer import Computer
+from be8bbbce.asm import Assembler, ASM
 
 
 def p(computer: Computer, a: Assembler):

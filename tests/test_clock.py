@@ -1,6 +1,6 @@
-from components.clock import Clock
-from components.receiver import Receiver
-from components.signals import Signals
+from be8bbbce.components.clock import Clock
+from be8bbbce.components.receiver import Receiver
+from be8bbbce.components.signals import Signals
 
 
 class ClockReceiver(Receiver):

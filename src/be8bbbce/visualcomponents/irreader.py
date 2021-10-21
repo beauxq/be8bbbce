@@ -1,5 +1,5 @@
-from components.instructionregister import InstructionRegister
-from components.valueif import ValueInterface
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.valueif import ValueInterface
 
 
 class IRReader(ValueInterface):

@@ -1,14 +1,14 @@
-from components.signals import Signals
-from components.clock import Clock
-from components.register import RegisterInOut
-from components.bus import Bus
-from components.alu import ALU
-from components.ram import Ram
-from components.programcounter import ProgramCounter
-from components.output import Output
-from components.instructionregister import InstructionRegister
-from components.flags import Flags
-from components.control import Control
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.clock import Clock
+from be8bbbce.components.register import RegisterInOut
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.alu import ALU
+from be8bbbce.components.ram import Ram
+from be8bbbce.components.programcounter import ProgramCounter
+from be8bbbce.components.output import Output
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.flags import Flags
+from be8bbbce.components.control import Control
 
 INSTRUCTION_LENGTH = 4
 

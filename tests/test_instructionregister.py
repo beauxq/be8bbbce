@@ -1,6 +1,6 @@
-from components.instructionregister import InstructionRegister
-from components.signals import Signals
-from components.bus import Bus
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.bus import Bus
 
 
 def test_instructionregister() -> None:

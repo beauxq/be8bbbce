@@ -1,16 +1,16 @@
 import pygame
 
-from visualcomponents.visualmain import VisualMain
-from computer import Computer
-from asm import Assembler
+from be8bbbce.visualcomponents.visualmain import VisualMain
+from be8bbbce.computer import Computer
+from be8bbbce.asm import Assembler
 
-from programs.programs16bit.multisub import p as p1
-from programs.programs16bit.dividsub import p as p2
-from programs.programs16bit.gcdsub import p as p4
-from programs.programs16bit.addfrsub import p as p5
-from programs.programs16bit.reducsub import p as p6
+from be8bbbce.programs.programs16bit.multisub import p as p1
+from be8bbbce.programs.programs16bit.dividsub import p as p2
+from be8bbbce.programs.programs16bit.gcdsub import p as p4
+from be8bbbce.programs.programs16bit.addfrsub import p as p5
+from be8bbbce.programs.programs16bit.reducsub import p as p6
 
-from programs.programs16bit.bernoulli import p as bern
+from be8bbbce.programs.programs16bit.bernoulli import p as bern
 
 pygame.init()
 

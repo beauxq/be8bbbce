@@ -1,7 +1,7 @@
-from components.register import Register, RegisterIn, RegisterInOut, RegisterOut
-from components.signals import Signals
-from components.bus import Bus
-from components.valueif import ValueInterface
+from be8bbbce.components.register import Register, RegisterIn, RegisterInOut, RegisterOut
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.valueif import ValueInterface
 
 LOAD = "LOAD"  # in
 ENABLE = "ENABLE"  # out

@@ -1,6 +1,6 @@
 from enum import IntEnum
 from collections import defaultdict
-from components.signals import Signals
+from be8bbbce.components.signals import Signals
 from typing import Dict, Tuple
 
 

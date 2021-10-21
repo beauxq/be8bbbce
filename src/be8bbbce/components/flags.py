@@ -1,6 +1,6 @@
-from components.register import RegisterIn
-from components.signals import Signals
-from components.alu import ALU
+from be8bbbce.components.register import RegisterIn
+from be8bbbce.components.signals import Signals
+from be8bbbce.components.alu import ALU
 
 
 class Flags(RegisterIn):
