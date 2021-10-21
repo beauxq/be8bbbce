@@ -1,4 +1,7 @@
 from setuptools import setup
 
 if __name__ == "__main__":
-    setup()
+    setup(packages=[
+        "be8bbbce",
+        "be8bbbce.components",
+    ])
