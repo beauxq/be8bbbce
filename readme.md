@@ -14,18 +14,30 @@ I programmed an emulator for that computer.
 
 It is a "simple-as-possible" architecture.
 
-Run main.py (text) or visual.py (gui).
+Run `main.py` (text) or `visual.py` (gui).
 
 The gui uses the pygame python package.  
 Note this bug with resizing the window in pygame: https://github.com/pygame/pygame/issues/201  
 Don't resize the window from the corner. Use the sides.
 
 
-### Expansion and Note G:
--------------------------
+### instruction set expansion
+-----------------------------
 
-I programmed the emulator so that I could easily change the number of bits.
-So then I made a 16-bit version with the exact same architecture.
+I added a few instructions to the instruction set just by implementing new microcode.
+
+ - `JI  = 0x9`  jump indirect
+ - `LIN = 0xa`  load indirect
+ - `SIN = 0xb`  store indirect
+
+The parameters to these are pointers to the values that would be the parameters to, respectively, `JMP`, `LDA`, and `STA`.
+
+
+### Note G:
+-----------
+
+I programmed the emulator so that I could easily change the width of the bus.
+So I could easily make a 16-bit version with the exact same architecture.
 
 Then I programmed software subroutines for multiplication, division, adding fractions,
 and reducing fractions.
@@ -35,14 +47,14 @@ Bernoulli Number calculator. (Bernoulli numbers are not integers,
 but they are rational numbers.)
 
 The program will output the numerator and then the denominator.
-If you're only looking at the visualization ( visualbernoulli.py ),
+If you're only looking at the visualization ( `visualbernoulli.py` ),
 you'll probably only see the denominator, unless you slow it
 down at the right time.
 You can see all the output in the console log.
 
 Resetting the computer after it halts (not clearing the memory) will calculate the
 next Bernoulli number after the last one it calculated. This might be how Ada Lovelace
-planned to use this algorithm - let the machine run to calculate one Bernoulli
+planned to use this program - let the machine run to calculate one Bernoulli
 number, then record that one, then start the machine again to calculate the next one.
 
 The 16-bit computer can calculate B14, but runs into overflow when calculating B16.
