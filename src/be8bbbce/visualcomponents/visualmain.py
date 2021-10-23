@@ -31,7 +31,7 @@ class VisualMain:
         self.pause_message_timer = 0  # time remaining to display message
 
         self.fps = 60
-        self.clock_hz_exponent = 10  # hz = 0.25 * 2 ** (x * .5)
+        self.clock_hz_exponent = 13  # hz = 0.25 * 2 ** (x * .5)
         self.clock_count = 0  # clock toggles since last change in hz
         self.last_ms = 0  # time of last change in hz (ms)
 
