@@ -9,8 +9,6 @@ from be8bbbce.visualcomponents.irreader import IRReader
 from be8bbbce.visualcomponents.signalwatcher import SignalWatcher
 from be8bbbce.asm import ASM_R
 
-DRAW_BOX_FOR_REGISTERS = False
-
 MAX_CLOCK_HZ_EXPONENT = 32
 
 
@@ -26,6 +24,8 @@ class VisualMain:
         self.sw = SignalWatcher(computer.signals)
         self.paused = True
         self.twos = False
+
+        self.draw_box_for_registers = False
 
         self.pause_message_time = 2000  # total time to display message, milliseconds
         self.pause_message_timer = 0  # time remaining to display message
@@ -301,7 +301,7 @@ class VisualMain:
         width = bit_count * bit_size
         x = (self.screen.get_width() - width) * x_portion
         y = (self.screen.get_height() - bit_size) * y_portion
-        if DRAW_BOX_FOR_REGISTERS:
+        if self.draw_box_for_registers:
             pygame.draw.rect(self.screen,
                              (120, 120, 100),
                              pygame.Rect(x, y, width, bit_size))
