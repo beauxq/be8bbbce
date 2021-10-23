@@ -36,7 +36,7 @@ The parameters to these are pointers to the values that would be the parameters 
 ### Note G:
 -----------
 
-I programmed the emulator so that I could easily change the width of the bus.
+I programmed the emulator so that I could configure the width of the bus.
 So I could easily make a 16-bit version with the exact same architecture.
 
 Then I programmed software subroutines for multiplication, division, adding fractions,
