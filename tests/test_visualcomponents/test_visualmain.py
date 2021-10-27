@@ -24,6 +24,11 @@ FixType = Tuple[
 @pytest.fixture
 def vm_enq_press(patched_pygame_event: PatchedEvent) -> Iterator[FixType]:
     c = Computer(4, True)
+
+    # make sure an undefined instruction goes to NOP
+    # this will be shown in coverage of ASM_R lambda
+    c.ram.memory[0] = 13 * 16
+
     vm = VisualMain(c)
 
     def enq(event_type: int, attrs: Dict[str, Any]) -> None:
