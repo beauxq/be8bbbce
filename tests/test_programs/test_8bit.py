@@ -15,6 +15,10 @@ from be8bbbce.programs.programs8bit import jumpindirect
 from be8bbbce.programs.programs8bit import loadstoreindirect
 from be8bbbce.programs.programs8bit import divide
 from be8bbbce.programs.programs8bit import sqrt
+from be8bbbce.programs.programs8bit import signedbounce
+from be8bbbce.programs.programs8bit import left
+from be8bbbce.programs.programs8bit import right
+from be8bbbce.programs.programs8bit import intro
 
 
 ADDRESS_LENGTH = 4
@@ -31,7 +35,11 @@ ADDRESS_LENGTH = 4
     [jumpindirect.p, ["3", "6", "9"]],
     [loadstoreindirect.p, ["1", "13", "1"]],
     [divide.p, ["7"]],
-    [sqrt.p, ["7"]]
+    [sqrt.p, ["7"]],
+    [signedbounce.p, ["1", "2", "3"]],
+    [left.p, []],  # TODO: check register values
+    [right.p, []],  # TODO: check register values
+    [intro.p, ["2", "4", "8"]],
 ])
 def test_programs(capsys: _pytest.capture.CaptureFixture[str],
                   p: Callable[[Computer, Assembler], None],
@@ -44,4 +52,5 @@ def test_programs(capsys: _pytest.capture.CaptureFixture[str],
     computer.clock.go(2000)
     printed = capsys.readouterr()
     for output in outputs:
+        # TODO: check that they're in the right order, all in different lines
         assert output in printed.out
