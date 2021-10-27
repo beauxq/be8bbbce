@@ -110,11 +110,3 @@ class Assembler:
 
     def m(self, asm: ASM, value: int):
         return (asm << self.address_length) + value
-
-
-def test():
-    print(MICROCODE[ASM.LDA])
-
-
-if __name__ == "__main__":
-    test()
