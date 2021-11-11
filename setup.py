@@ -7,4 +7,5 @@ if __name__ == "__main__":
         "be8bbbce.visualcomponents",
         "be8bbbce.programs",
         "be8bbbce.programs.programs8bit",
+        "be8bbbce.programs.programs16bit",
     ])
