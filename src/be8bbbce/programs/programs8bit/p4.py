@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ bounce between 0 and 256 - address 15 holds step size """
     computer.ram.memory[0] = a.m(ASM.OUT, 0)
     computer.ram.memory[1] = a.m(ASM.ADD, 15)

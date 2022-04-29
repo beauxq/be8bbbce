@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """  Matthew Kudzin multiply with no conditional jump """
     """
     0:   LDI   0

@@ -43,7 +43,7 @@ ADDRESS_LENGTH = 4
 ])
 def test_programs(capsys: _pytest.capture.CaptureFixture[str],
                   p: Callable[[Computer, Assembler], None],
-                  outputs: List[str]):
+                  outputs: List[str]) -> None:
     a = Assembler(ADDRESS_LENGTH)
     computer = Computer(ADDRESS_LENGTH)
     computer.control.reset()

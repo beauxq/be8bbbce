@@ -15,7 +15,7 @@ ADDRESS_LENGTH = 12
 BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH  # 4 + 12 = 16
 
 
-def main():
+def main() -> None:
     a = Assembler(ADDRESS_LENGTH)
 
     computer = Computer(ADDRESS_LENGTH)

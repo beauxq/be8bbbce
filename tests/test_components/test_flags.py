@@ -12,7 +12,7 @@ def test_flags() -> None:
     alu = ALU(signals, bus, reg, reg, 8)
     flags = Flags(signals, alu)
 
-    def alu_value_to_flags(alu_v: int, alu_c: int, expected_z: int, expected_c: int):
+    def alu_value_to_flags(alu_v: int, alu_c: int, expected_z: int, expected_c: int) -> None:
         alu.value = alu_v
         alu.carry = alu_c
         flags.receive_signal(Signals.FLAGS_IN, 1)

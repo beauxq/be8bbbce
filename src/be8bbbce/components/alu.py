@@ -19,7 +19,7 @@ class ALU(RegisterOut):
         self.subtract = 0
         self.enabled = 0  # output to bus
 
-    def twos_complement_negation(self, x: int):
+    def twos_complement_negation(self, x: int) -> int:
         assert 0 <= x < self.max_plus_one
         return (self.max_plus_one - x) % self.max_plus_one
 
@@ -40,7 +40,7 @@ class ALU(RegisterOut):
             # put result on bus again
             super().receive_signal(Signals.ALU_OUT, 1)
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         super().receive_signal(code, value)
         if (code == Signals.CLOCK) and (not value):
             # in original computer, this is happening

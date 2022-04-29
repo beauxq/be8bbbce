@@ -17,7 +17,7 @@ class ReceiverChecker(Receiver):
         self.high_counter: Counter[str] = Counter()
         self.low_counter: Counter[str] = Counter()
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if value:
             self.high_counter[code] += 1
         else:
@@ -25,7 +25,7 @@ class ReceiverChecker(Receiver):
 
 
 @pytest.fixture
-def control():
+def control() -> Control:
     signals = Signals()
     bus = Bus()
     ir = InstructionRegister(signals, bus, 4)

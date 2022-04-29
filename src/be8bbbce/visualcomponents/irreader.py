@@ -12,7 +12,11 @@ class IRReader(ValueInterface):
         self.instruction_part = True
 
     @property
-    def value(self):
+    def value(self) -> int:
         if self.instruction_part:
             return self.ir.value >> self.ir.address_length
         return self.ir.value % (1 << self.ir.address_length)
+
+    @value.setter
+    def value(self, v: int) -> None:
+        raise TypeError("no setter for IRReader value")

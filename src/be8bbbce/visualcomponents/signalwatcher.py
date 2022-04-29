@@ -24,18 +24,19 @@ signal_to_bit = {
 
 class SignalWatcher(ValueInterface, Receiver):
     def __init__(self, signals: Signals):
-        # not calling super().__init__ because value defined by getter
+        super().__init__()
         # I can't find a good solution to this.
+        # I would like to have value attribute in some classes (for performance),
+        # and value property getter in others.
         # https://stackoverflow.com/questions/56493495/how-to-write-interface-contract-for-object-property-attribute-existence-in-p#
         signals.listen(self)
-        self.value = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if code in signal_to_bit:
             bit = signal_to_bit[code]
             if value:
-                self.value |= bit
+                self._value |= bit
             else:  # signal off
-                self.value &= ~bit
+                self._value &= ~bit
         elif code == Signals.RESET:
-            self.value = 0
+            self._value = 0

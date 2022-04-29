@@ -11,5 +11,9 @@ class RamReader(ValueInterface):
         self.ram = ram
 
     @property
-    def value(self):
+    def value(self) -> int:
         return self.ram.memory[self.ram.mar.value]
+
+    @value.setter
+    def value(self, v: int) -> None:
+        raise TypeError("no setter for RamReader value")

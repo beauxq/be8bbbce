@@ -7,7 +7,7 @@ import pytest
 
 
 @pytest.fixture
-def alu():
+def alu() -> ALU:
     signals = Signals()
     bus = Bus()
     reg_a = RegisterInOut(signals, bus, Signals.REG_A_IN, Signals.REG_A_OUT)
@@ -21,7 +21,7 @@ AASType = Tuple[ALU, Callable[[int, int, int, int], None], Callable[[int, int, i
 
 @pytest.fixture
 def alu_add_subtract(alu: ALU) -> AASType:
-    def arithmetic(a: int, b: int, result: int, carry: int, subtract: int):
+    def arithmetic(a: int, b: int, result: int, carry: int, subtract: int) -> None:
         # set subtract input directly
         alu.reg_a.value = a
         alu.reg_b.value = b
@@ -40,10 +40,10 @@ def alu_add_subtract(alu: ALU) -> AASType:
         assert alu.value == result
         assert alu.carry == carry
 
-    def add(a: int, b: int, result: int, carry: int):
+    def add(a: int, b: int, result: int, carry: int) -> None:
         arithmetic(a, b, result, carry, 0)
 
-    def subtract(a: int, b: int, result: int, carry: int):
+    def subtract(a: int, b: int, result: int, carry: int) -> None:
         arithmetic(a, b, result, carry, 1)
 
     return alu, add, subtract

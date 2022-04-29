@@ -9,7 +9,7 @@ class Register(ValueInterface, Receiver):
                  signals: Signals,
                  bus: ValueInterface,
                  my_load_signal: str,
-                 my_enable_signal: str):
+                 my_enable_signal: str) -> None:
         super().__init__()
         self.signals = signals
         self.signals.listen(self)
@@ -18,17 +18,16 @@ class Register(ValueInterface, Receiver):
         self.my_load_signal = my_load_signal
         # enable is move data from register to bus
         self.my_enable_signal = my_enable_signal
-        self.value = 0
         self.load_set = 0
 
     # implement these in subclasses
-    def enable_out(self):
+    def enable_out(self) -> None:
         pass
 
-    def load_in(self):
+    def load_in(self) -> None:
         pass
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if (code == self.my_enable_signal) and value:
             self.enable_out()
         elif code == self.my_load_signal:
@@ -37,7 +36,7 @@ class Register(ValueInterface, Receiver):
             # print("register", self.my_load_signal, "value", self.bus.value)
             self.load_in()
         elif (code == Signals.RESET) and value:
-            self.value = 0
+            self._value = 0
             self.load_set = 0
 
 
@@ -46,11 +45,11 @@ class RegisterIn(Register):
     def __init__(self,
                  signals: Signals,
                  bus: ValueInterface,
-                 my_load_signal: str):
+                 my_load_signal: str) -> None:
         super().__init__(signals, bus, my_load_signal, "x")
 
-    def load_in(self):
-        self.value = self.bus.value
+    def load_in(self) -> None:
+        self._value = self.bus.value
 
 
 class RegisterOut(Register):
@@ -61,15 +60,15 @@ class RegisterOut(Register):
                  my_enable_signal: str):
         super().__init__(signals, bus, "x", my_enable_signal)
 
-    def enable_out(self):
-        self.bus.value = self.value
+    def enable_out(self) -> None:
+        self.bus.value = self._value
 
 
 class RegisterInOut(Register):
     """ register that can read from bus and write to bus """
 
-    def load_in(self):
-        self.value = self.bus.value
+    def load_in(self) -> None:
+        self._value = self.bus.value
 
-    def enable_out(self):
-        self.bus.value = self.value
+    def enable_out(self) -> None:
+        self.bus.value = self._value

@@ -9,7 +9,7 @@ class ProgramCounter(RegisterInOut):
         self.max_plus_one = 1 << address_length
         self.increment = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         super().receive_signal(code, value)
         if code == Signals.COUNTER_INCREMENT:
             self.increment = value

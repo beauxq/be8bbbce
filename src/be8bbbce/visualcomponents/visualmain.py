@@ -42,7 +42,7 @@ class VisualMain:
 
         self.load_dimensions()
 
-    def load_dimensions(self):
+    def load_dimensions(self) -> None:
         # print("setting font size", int(self.led_size + 1)
         # print("width", self.screen.get_width())
         self.led_size = (min(self.screen.get_width(),
@@ -60,17 +60,18 @@ class VisualMain:
         self.vertical_label_font = pygame.font.Font('freesansbold.ttf',
                                                     int(self.led_size + 1))
 
-    def clock_count_reset(self):
+    def clock_count_reset(self) -> None:
         self.clock_count = 0
         self.last_ms = pygame.time.get_ticks()
 
-    def get_clock_hz(self):
-        return round(0.25 * (2 ** (self.clock_hz_exponent * 0.5)), 2)
+    def get_clock_hz(self) -> float:
+        return round(0.25 * (2 ** (self.clock_hz_exponent * 0.5)), 2)  # type: ignore
+        # mypy thinks round returns Any
 
-    def update_pause_message_timer(self):
+    def update_pause_message_timer(self) -> None:
         self.pause_message_timer = max(self.pause_message_timer - 1000 // self.fps, 0)
 
-    def run_computer_clock(self):
+    def run_computer_clock(self) -> None:
         passed_ms = pygame.time.get_ticks() - self.last_ms
         clock_hz = self.get_clock_hz()
         target_clock_toggles = int(passed_ms * clock_hz * 0.002)
@@ -80,7 +81,7 @@ class VisualMain:
             self.computer.clock.toggle()
             self.clock_count += 1
 
-    def process_events(self):
+    def process_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -127,7 +128,7 @@ class VisualMain:
                     self.computer.clock.go_low()
                 self.keys_pressed[event.key] = False
 
-    def run(self):
+    def run(self) -> None:
         self.running = True
         pygame_clock = pygame.time.Clock()
         self.clock_count_reset()
@@ -148,7 +149,7 @@ class VisualMain:
 
             pygame.display.flip()
 
-    def draw(self):
+    def draw(self) -> None:
         bit_count = self.computer.bit_count
 
         self.draw_value(self.computer.bus, bit_count,
@@ -289,7 +290,7 @@ class VisualMain:
                    y_portion: float,
                    led_color: Tuple[Union[float, int], Union[float, int], Union[float, int]],
                    label_text: Union[str, List[str]],
-                   vertical_label_height: float=0):
+                   vertical_label_height: float=0) -> None:
         """
         component is anything with value attribute - duck typing
         bit_count is number of LEDs to show

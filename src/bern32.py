@@ -14,7 +14,7 @@ ADDRESS_LENGTH = 28
 BIT_COUNT = INSTRUCTION_LENGTH + ADDRESS_LENGTH  # 4 + 28 = 32
 
 
-def main():
+def main() -> None:
     a = Assembler(ADDRESS_LENGTH)
 
     print("initializing computer...")

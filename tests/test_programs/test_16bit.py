@@ -28,7 +28,7 @@ ADDRESS_LENGTH = 12
 ])
 def test_subroutines(capsys: _pytest.capture.CaptureFixture[str],
                      ps: List[Callable[[Computer, Assembler], None]],  # last p is run, depends on earlier ps
-                     outputs: List[str]):
+                     outputs: List[str]) -> None:
     a = Assembler(ADDRESS_LENGTH)
     computer = Computer(ADDRESS_LENGTH)
     computer.control.reset()
@@ -47,7 +47,7 @@ def test_subroutines(capsys: _pytest.capture.CaptureFixture[str],
     [multfastsub.p]
 ])
 def test_bernoulli(capsys: _pytest.capture.CaptureFixture[str],
-                   multiplication: Callable[[Computer, Assembler], None]):
+                   multiplication: Callable[[Computer, Assembler], None]) -> None:
     a = Assembler(ADDRESS_LENGTH)
     computer = Computer(ADDRESS_LENGTH)
 

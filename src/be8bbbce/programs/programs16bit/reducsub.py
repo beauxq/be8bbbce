@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ reduce fraction subroutine at 2400 - requires divide and gcd """
 
     # global utility constants

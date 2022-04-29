@@ -8,7 +8,7 @@ LOAD = "LOAD"  # in
 ENABLE = "ENABLE"  # out
 
 
-def make_sure_load_works(reg: Register, bus: ValueInterface):
+def make_sure_load_works(reg: Register, bus: ValueInterface) -> None:
     bus.value = 42
     reg.receive_signal(LOAD, 1)
     reg.receive_signal(Signals.CLOCK, 1)
@@ -17,7 +17,7 @@ def make_sure_load_works(reg: Register, bus: ValueInterface):
     assert reg.value == 42
 
 
-def make_sure_load_does_not_work(reg: Register, bus: ValueInterface):
+def make_sure_load_does_not_work(reg: Register, bus: ValueInterface) -> None:
     bus.value = 42
     previous = reg.value
     reg.receive_signal(LOAD, 1)
@@ -28,7 +28,7 @@ def make_sure_load_does_not_work(reg: Register, bus: ValueInterface):
     assert reg.value == previous
 
 
-def make_sure_enable_works(reg: Register, bus: ValueInterface):
+def make_sure_enable_works(reg: Register, bus: ValueInterface) -> None:
     reg.value = 21
     reg.receive_signal(LOAD, 0)
     reg.receive_signal(ENABLE, 1)
@@ -38,7 +38,7 @@ def make_sure_enable_works(reg: Register, bus: ValueInterface):
     assert bus.value == 21
 
 
-def make_sure_enable_does_not_work(reg: Register, bus: ValueInterface):
+def make_sure_enable_does_not_work(reg: Register, bus: ValueInterface) -> None:
     reg.value = 21
     previous = bus.value
     reg.receive_signal(LOAD, 0)

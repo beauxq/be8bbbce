@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ load and store indirect (1 13 1) """
     computer.ram.memory[0] = a.m(ASM.LIN, 13)
     computer.ram.memory[1] = a.m(ASM.OUT, 0)  # 1

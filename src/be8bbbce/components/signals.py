@@ -35,10 +35,10 @@ class Signals:
     # are active low on the side of an inverter connected to the module.
     # In this emulator, they are all active high through the whole connection.
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.receivers: List[Receiver] = []
 
-    def signal(self, code: str, value: int):
+    def signal(self, code: str, value: int) -> None:
         """
         send signal to all receivers
         """
@@ -46,7 +46,7 @@ class Signals:
         for receiver in self.receivers:
             receiver.receive_signal(code, value)
 
-    def listen(self, receiver: Receiver):
+    def listen(self, receiver: Receiver) -> None:
         """
         make it so this receiver receives signals
         """

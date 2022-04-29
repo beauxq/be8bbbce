@@ -5,7 +5,13 @@ because VisualMain and Computer are not programmed to be thread safe
 
 from typing import Any, Callable, Dict, Iterator, Tuple
 import pygame
+from be8bbbce.components.bus import Bus
+from be8bbbce.components.instructionregister import InstructionRegister
+from be8bbbce.components.ram import Ram
+from be8bbbce.components.signals import Signals
 from be8bbbce.computer import Computer
+from be8bbbce.visualcomponents.irreader import IRReader
+from be8bbbce.visualcomponents.ramreader import RamReader
 from be8bbbce.visualcomponents.visualmain import VisualMain
 from tests.test_visualcomponents.patch_pygame import PatchedEvent
 import threading
@@ -84,9 +90,11 @@ def test_pause(vm_enq_press: FixType) -> None:
 
     assert vm.paused
 
-    press_key(pygame.K_SPACE, True)
+    press_key(pygame.K_SPACE, True)  # type: ignore
 
-    assert not vm.paused
+    assert not vm.paused  # type: ignore
+    # mypy bug doesn't narrow typing of vm.paused correctly
+    # https://github.com/python/mypy/issues/12598
 
 
 def test_clock_speed(vm_enq_press: FixType) -> None:
@@ -206,3 +214,17 @@ def test_pause_message(vm_enq_press: FixType) -> None:
     press_key(pygame.K_o)
 
     assert vm.pause_message_timer > 0
+
+
+def test_value_reader_exceptions() -> None:
+    ir = InstructionRegister(Signals(), Bus(), 4)
+    irr = IRReader(ir)
+
+    with pytest.raises(TypeError):
+        irr.value = 3
+
+    ram = Ram(Signals(), Bus(), 4, 8, False)
+    rr = RamReader(ram)
+
+    with pytest.raises(TypeError):
+        rr.value = 4

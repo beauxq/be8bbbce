@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ bounce between signed ints -127 and 127 - remember to flip the 2s complement switch """
     computer.ram.memory[0] = a.m(ASM.LDA, 14)
     computer.ram.memory[1] = a.m(ASM.OUT, 0)

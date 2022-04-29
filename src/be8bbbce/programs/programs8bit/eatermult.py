@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ Ben Eater's multiplication """
     computer.ram.memory[0] = a.m(ASM.LDA, 14)
     computer.ram.memory[1] = a.m(ASM.SUB, 12)

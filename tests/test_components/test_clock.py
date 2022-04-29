@@ -9,7 +9,7 @@ class ClockReceiver(Receiver):
         self.high_counter = 0
         self.low_counter = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if code == Signals.CLOCK:
             if value == 1:
                 self.high_counter += 1

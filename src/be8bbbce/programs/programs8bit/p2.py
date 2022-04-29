@@ -2,7 +2,7 @@ from be8bbbce.computer import Computer
 from be8bbbce.asm import Assembler, ASM
 
 
-def p(computer: Computer, a: Assembler):
+def p(computer: Computer, a: Assembler) -> None:
     """ 5 + 6 - 7 """
     computer.ram.memory[0] = a.m(ASM.LDA, 15)
     computer.ram.memory[1] = a.m(ASM.ADD, 14)

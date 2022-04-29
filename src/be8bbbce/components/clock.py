@@ -12,25 +12,25 @@ class Clock(ValueInterface, Receiver):
         self.signals.listen(self)  # clock listening to halt signal
         self.halted = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if (code == Signals.HALT) and value:
             self.halted = value
         if code == Signals.RESET:
             self.halted = 0
 
-    def go_high(self):
+    def go_high(self) -> None:
         """ does nothing if clock is already high """
         if (not self.value) and (not self.halted):
             self.value = 1
             self.signals.signal(Signals.CLOCK, self.value)
 
-    def go_low(self):
+    def go_low(self) -> None:
         """ does nothing if clock is already low """
         if (self.value) and (not self.halted):
             self.value = 0
             self.signals.signal(Signals.CLOCK, self.value)
 
-    def go(self, cycles: int=8999999999999999999, delay_seconds: float=0.0):
+    def go(self, cycles: int=8999999999999999999, delay_seconds: float=0.0) -> None:
         """ run clock the given number of cycles or until halt signal """
         delay_seconds /= 2
         while (cycles > 0) and (not self.halted):
@@ -40,7 +40,7 @@ class Clock(ValueInterface, Receiver):
             self.go_low()
             cycles -= 1
 
-    def toggle(self):
+    def toggle(self) -> None:
         if self.value:
             self.go_low()
         else:

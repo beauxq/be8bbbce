@@ -16,21 +16,26 @@ class PatchedSurface:
     def get_height(self) -> int:
         return self._height
 
-    def blit(self, source: pygame.Surface, destination: Union[pygame.Rect, Tuple[int, int]]):
+    def blit(self,
+             source: pygame.Surface,
+             destination: Union[pygame.Rect, Tuple[int, int]]) -> None:
         pass
 
-    def fill(self, color: Tuple[int, int, int]):
+    def fill(self, color: Tuple[int, int, int]) -> None:
         pass
 
     def get_rect(self) -> pygame.Rect:
         return pygame.Rect(0, 0, 0, 0)
 
 
-def patched_rect(surface: pygame.Surface, color: Tuple[int, int, int], rect: pygame.Rect):
+def patched_rect(surface: pygame.Surface, color: Tuple[int, int, int], rect: pygame.Rect) -> None:
     pass
 
 
-def patched_circle(surface: pygame.Surface, color: Tuple[int, int, int], center: Tuple[int, int], radius: float):
+def patched_circle(surface: pygame.Surface,
+                   color: Tuple[int, int, int],
+                   center: Tuple[int, int],
+                   radius: float) -> None:
     pass
 
 
@@ -38,7 +43,7 @@ def patched_set_mode(size: Tuple[int, int], flags: int) -> PatchedSurface:
     return PatchedSurface(size[0], size[1])
 
 
-def patched_set_repeat(delay: int, interval: int):
+def patched_set_repeat(delay: int, interval: int) -> None:
     """ requires initialization of video system with `set_mode` """
     pass
 
@@ -101,7 +106,7 @@ class PatchedEvent:
     def enqueue(self, events: Union[
         List[Union[pygame.event.Event, "PatchedEvent.Event"]],
         Union[pygame.event.Event, "PatchedEvent.Event"]
-    ]):
+    ]) -> None:
         if not isinstance(events, list):
             events = [events]
         self.lock.acquire()

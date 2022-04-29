@@ -19,7 +19,7 @@ PS = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11]
 ADDRESS_LENGTH = 4
 
 
-def main():
+def main() -> None:
     a = Assembler(ADDRESS_LENGTH)
 
     computer = Computer(ADDRESS_LENGTH)

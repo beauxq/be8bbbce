@@ -24,7 +24,7 @@ class Control(ValueInterface, Receiver):
     def __init__(self,
                  signals: Signals,
                  ir: InstructionRegister,
-                 flags: Flags):
+                 flags: Flags) -> None:
         super().__init__()
         self.signals = signals
         self.signals.listen(self)
@@ -78,7 +78,7 @@ class Control(ValueInterface, Receiver):
         if not anything_out:
             self.ir.bus.value = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if code == Signals.CLOCK:
             if value:
                 # high clock

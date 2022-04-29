@@ -6,13 +6,13 @@ from be8bbbce.components.bus import Bus
 
 
 class _MemoryAddressRegister(RegisterIn):
-    def __init__(self, signals: Signals, bus: Bus, address_length: int):
+    def __init__(self, signals: Signals, bus: Bus, address_length: int) -> None:
         super().__init__(signals, bus, Signals.MAR_IN)
         self.address_length = address_length
         self.address_count = 1 << self.address_length
 
-    def load_in(self):
-        self.value = self.bus.value % self.address_count
+    def load_in(self) -> None:
+        self._value = self.bus.value % self.address_count
 
 
 class Ram(Receiver):
@@ -21,7 +21,7 @@ class Ram(Receiver):
                  bus: Bus,
                  address_length: int,
                  bit_count: int,
-                 clean_memory: bool):
+                 clean_memory: bool) -> None:
         signals.listen(self)
         self.bus = bus
         self.mar = _MemoryAddressRegister(signals, bus, address_length)
@@ -33,7 +33,7 @@ class Ram(Receiver):
                            for _ in range(self.mar.address_count)]
         self.ram_in = 0
 
-    def receive_signal(self, code: str, value: int):
+    def receive_signal(self, code: str, value: int) -> None:
         if (code == Signals.CLOCK) and value:
             if self.ram_in:
                 self.memory[self.mar.value] = self.bus.value
